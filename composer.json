@@ -1,4 +1,6 @@
 {
+    "name": "apiaaaab/apiaaaab",
+    "description": "API that allows you to manage tournaments with stats",
     "type": "project",
     "license": "proprietary",
     "require": {
