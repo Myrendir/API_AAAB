@@ -24,7 +24,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class AuthController extends AbstractController
 {
     /**
-     * @Route("/login", name="login", methods={"GET"})
+     * @Route("/login", name="login", methods={"POST"})
      *
      * @param AuthenticationUtils $authenticationUtils
      *
@@ -39,7 +39,7 @@ class AuthController extends AbstractController
     }
 
     /**
-     * @Route("/login_check", name="loginCheck", methods={"POST"})
+     * @Route("/login_check", name="login_check")
      *
      * @return JsonResponse
      */
