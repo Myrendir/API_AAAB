@@ -12,13 +12,14 @@ use App\Repository\UsersRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
  *
  * @author CONTE Alexandre <pro.alexandre.conte@gmail.com>
  */
-class Users
+class Users implements UserInterface
 {
     use BlameableEntity;
     use TimestampableEntity;
@@ -127,7 +128,10 @@ class Users
 
     public function getRoles(): ?array
     {
-        return $this->roles;
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
     public function setRoles(array $roles): self
@@ -135,5 +139,20 @@ class Users
         $this->roles = $roles;
 
         return $this;
+    }
+
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    public function getUsername()
+    {
+        return $this->summonerName;
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
     }
 }
