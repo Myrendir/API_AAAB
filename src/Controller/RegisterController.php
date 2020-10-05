@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class RegisterController
@@ -31,16 +32,24 @@ class RegisterController extends AbstractController
      *
      * @param UserManager $userManager
      * @param Request $request
+     * @param ValidatorInterface $validator
      *
      * @return JsonResponse
      */
-    public function registerUser(UserManager $userManager, Request $request)
+    public function registerUser(UserManager $userManager, Request $request, ValidatorInterface $validator)
     {
         $user = $userManager->createUser();
         $data = json_decode($request->getContent(), true);
         $form = $this->createForm(RegisterFormType::class, $user);
 
         $form->submit($data);
+        $violation = $validator->validate($user);
+
+        if (0 !== count($violation)) {
+            foreach ($violation as $error) {
+                return new JsonResponse($error->getMessage(), Response::HTTP_BAD_REQUEST);
+            }
+        }
 
         $userManager->save($user);
 

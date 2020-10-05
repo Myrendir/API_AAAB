@@ -10,7 +10,6 @@ namespace App\Manager;
 
 use App\Entity\Users;
 use App\Repository\UsersRepository;
-use App\Services\ValidatorService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -35,21 +34,18 @@ class UserManager
      * @param UsersRepository $usersRepository
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param LoggerInterface $logger
-     * @param ValidatorService $validatorService
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         UsersRepository $usersRepository,
         UserPasswordEncoderInterface $passwordEncoder,
-        LoggerInterface $logger,
-        ValidatorService $validatorService
+        LoggerInterface $logger
     )
     {
         $this->em = $entityManager;
         $this->userRepository = $usersRepository;
         $this->passwordEncoder = $passwordEncoder;
         $this->logger = $logger;
-        $this->validatorService = $validatorService;
     }
 
     public function createUser()
@@ -72,7 +68,6 @@ class UserManager
 
     public function save(Users $users, $andFlush = true)
     {
-        $this->validatorService->validate($users);
         $this->updatePassword($users);
 
         $this->em->persist($users);
