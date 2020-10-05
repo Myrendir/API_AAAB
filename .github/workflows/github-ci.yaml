@@ -5,6 +5,9 @@ on:
     branches-ignore:
       - master
   pull_request:
+    branches:
+      - develop
+      - master
 
 jobs:
   build:
