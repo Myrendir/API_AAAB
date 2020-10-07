@@ -26,7 +26,6 @@ class UserManager
     protected $userRepository;
     protected $passwordEncoder;
     protected $logger;
-    protected $validatorService;
 
     /**
      * UserManager constructor.

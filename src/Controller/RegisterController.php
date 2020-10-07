@@ -43,7 +43,7 @@ class RegisterController extends AbstractController
         $form = $this->createForm(RegisterFormType::class, $user);
 
         $form->submit($data);
-        $violation = $validator->validate($user);
+        $violation = $validator->validate($user, null, 'Register');
 
         if (0 !== count($violation)) {
             foreach ($violation as $error) {

@@ -14,6 +14,7 @@ use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
@@ -38,11 +39,31 @@ class Users implements UserInterface
 
     /**
      * @ORM\Column(name="summoner_name", type="string", length=16)
+     * @Assert\NotBlank(
+     *     message="The field Summoner Name is missing.",
+     *     groups={"Register", "Profil"}
+     * )
+     * @Assert\Length(
+     *     min="3",
+     *     minMessage="The field Summoner Name must be minimum 3 characters",
+     *     max="16",
+     *     maxMessage="The field Summoner Name not must be superior at 16 characters",
+     *     groups={"Register", "Profil"}
+     * )
+     *
      */
     private $summonerName;
 
     /**
      * @ORM\Column(name="email", type="string", length=150, nullable=true)
+     * @Assert\NotBlank(
+     *     message="The field Email is missing.",
+     *     groups={"Profil"}
+     * )
+     * @Assert\Email(
+     *     message="This value is not a valid email address.",
+     *     groups={"Profil"}
+     * )
      */
     private $email;
 
@@ -52,7 +73,34 @@ class Users implements UserInterface
     private $password;
 
     /**
+     * @Assert\EqualTo(
+     *     propertyPath="plainPassword",
+     *     message="The field Confirmation were not equal to Password.",
+     *     groups={"Register", "Profil"}
+     * )
+     * @Assert\NotBlank(
+     *     message="The field Confirmation is missing.",
+     *     groups={"Register", "Profil"}
+     * )
+     * @Assert\Length(
+     *     min="8",
+     *     minMessage="The field Confirmation must be minimum 8 characters",
+     *     groups={"Regsiter", "Profil"}
+     * )
+     */
+    public $confirmPassword;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank(
+     *     message="The field Password is missing.",
+     *     groups={"Register", "Profil"}
+     * )
+     * @Assert\Length(
+     *     min="8",
+     *     minMessage="The field Password must be 8 characters minimum",
+     *     groups={"Register", "Profil"}
+     * )
      */
     private $plainPassword;
 
@@ -68,6 +116,7 @@ class Users implements UserInterface
 
     /**
      * @ORM\Column(name="roles", type="json")
+     * @Assert\NotBlank(message="The field Roles is missing.")
      */
     private $roles = [];
 
@@ -76,16 +125,26 @@ class Users implements UserInterface
      */
     private $salt;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getSummonerName(): ?string
     {
         return $this->summonerName;
     }
 
+    /**
+     * @param string $summonerName
+     * @return $this
+     */
     public function setSummonerName(string $summonerName): self
     {
         $this->summonerName = $summonerName;
@@ -93,11 +152,18 @@ class Users implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * @param string|null $email
+     * @return $this
+     */
     public function setEmail(?string $email): self
     {
         $this->email = $email;
@@ -105,11 +171,18 @@ class Users implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
+    /**
+     * @param string $password
+     * @return $this
+     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -117,11 +190,18 @@ class Users implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getPlainPassword(): ?string
     {
         return $this->plainPassword;
     }
 
+    /**
+     * @param string $plainPassword
+     * @return $this
+     */
     public function setPlainPassword(string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
@@ -129,11 +209,18 @@ class Users implements UserInterface
         return $this;
     }
 
+    /**
+     * @return bool|null
+     */
     public function getAvailability(): ?bool
     {
         return $this->availability;
     }
 
+    /**
+     * @param bool $availability
+     * @return $this
+     */
     public function setAvailability(bool $availability): self
     {
         $this->availability = $availability;
@@ -141,11 +228,18 @@ class Users implements UserInterface
         return $this;
     }
 
+    /**
+     * @return bool|null
+     */
     public function getIsEnabled(): ?bool
     {
         return $this->isEnabled;
     }
 
+    /**
+     * @param bool $isEnabled
+     * @return $this
+     */
     public function setIsEnabled(bool $isEnabled): self
     {
         $this->isEnabled = $isEnabled;
@@ -153,6 +247,9 @@ class Users implements UserInterface
         return $this;
     }
 
+    /**
+     * @return array|null
+     */
     public function getRoles(): ?array
     {
         $roles = $this->roles;
@@ -161,6 +258,10 @@ class Users implements UserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param array $roles
+     * @return $this
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -168,21 +269,33 @@ class Users implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|void|null
+     */
     public function getSalt()
     {
         // TODO: Implement getSalt() method.
     }
 
+    /**
+     * @param $salt
+     */
     public function setSalt($salt)
     {
         $this->salt = $salt;
     }
 
+    /**
+     * @return string
+     */
     public function getUsername()
     {
         return $this->summonerName;
     }
 
+    /**
+     *
+     */
     public function eraseCredentials()
     {
         $this->plainPassword = null;
