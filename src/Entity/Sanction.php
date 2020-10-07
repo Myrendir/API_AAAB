@@ -23,37 +23,72 @@ class Sanction
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="start_sanction", type="datetime")
      */
-    private $duration;
+    private $startSanction;
+
+    /**
+     * @ORM\Column(name="end_sanction", type="datetime")
+     */
+    private $endSanction;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $motif;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDuration(): ?string
+    /**
+     * @return mixed
+     */
+    public function getStartSanction()
     {
-        return $this->duration;
+        return $this->startSanction;
     }
 
-    public function setDuration(string $duration): self
+    /**
+     * @param mixed $startSanction
+     */
+    public function setStartSanction($startSanction): void
     {
-        $this->duration = $duration;
-
-        return $this;
+        $this->startSanction = $startSanction;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getEndSanction()
+    {
+        return $this->endSanction;
+    }
+
+    /**
+     * @param mixed $endSanction
+     */
+    public function setEndSanction($endSanction): void
+    {
+        $this->endSanction = $endSanction;
+    }
+
+    /**
+     * @return string|null
+     */
     public function getMotif(): ?string
     {
         return $this->motif;
     }
 
+    /**
+     * @param string $motif
+     * @return $this
+     */
     public function setMotif(string $motif): self
     {
         $this->motif = $motif;
