@@ -45,9 +45,9 @@ class Users implements UserInterface
      * )
      * @Assert\Length(
      *     min="3",
-     *     minMessage="The field Summoner Name must be minimum 3 characters",
+     *     minMessage="The field Summoner Name must do minimum 3 characters",
      *     max="16",
-     *     maxMessage="The field Summoner Name not must be superior at 16 characters",
+     *     maxMessage="The field Summoner Name not must do superior at 16 characters",
      *     groups={"Register", "Profil"}
      * )
      *
@@ -84,8 +84,13 @@ class Users implements UserInterface
      * )
      * @Assert\Length(
      *     min="8",
-     *     minMessage="The field Confirmation must be minimum 8 characters",
+     *     minMessage="The field Confirmation must do minimum 8 characters",
      *     groups={"Regsiter", "Profil"}
+     * )
+     * @Assert\Regex(
+     *     pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$",
+     *     message="The field Password must contains one number and one special character",
+     *     groups={"Register", "Profil"}
      * )
      */
     public $confirmPassword;
@@ -98,7 +103,12 @@ class Users implements UserInterface
      * )
      * @Assert\Length(
      *     min="8",
-     *     minMessage="The field Password must be 8 characters minimum",
+     *     minMessage="The field Password must do 8 characters minimum",
+     *     groups={"Register", "Profil"}
+     * )
+     * @Assert\Regex(
+     *     pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$",
+     *     message="The field Password must contains one number and one special character",
      *     groups={"Register", "Profil"}
      * )
      */
@@ -124,6 +134,31 @@ class Users implements UserInterface
      * @ORM\Column(name="salt", type="string")
      */
     private $salt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Teams", inversedBy="top")
+     */
+    private $top;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Teams", inversedBy="jungle")
+     */
+    private $jungle;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Teams", inversedBy="adc")
+     */
+    private $adc;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Teams", inversedBy="mid")
+     */
+    private $mid;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="support")
+     */
+    private $support;
 
     /**
      * @return int|null
