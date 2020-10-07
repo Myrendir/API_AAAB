@@ -23,16 +23,29 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class RegisterFormType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('summonerName', TextType::class)
+            ->add('summonerName', TextType::class, [
+                'label' => 'Summoner Name'
+            ])
             ->add('password', PasswordType::class, [
                 'property_path' => 'plainPassword',
+                'label' => 'Password'
+            ])
+            ->add('confirmPassword', PasswordType::class, [
+                'label' => 'Confirmation'
             ])
         ;
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
