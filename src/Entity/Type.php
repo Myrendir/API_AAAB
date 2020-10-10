@@ -50,10 +50,10 @@ class Type
     }
 
     /**
-     * @param string $title
+     * @param string|null $title
      * @return $this
      */
-    public function setTitle(string $title): self
+    public function setTitle(?string $title): self
     {
         $this->title = $title;
 
