@@ -35,6 +35,7 @@ class RegisterController extends AbstractController
      * @param ValidatorInterface $validator
      *
      * @return JsonResponse
+     *
      */
     public function registerUser(UserManager $userManager, Request $request, ValidatorInterface $validator)
     {
