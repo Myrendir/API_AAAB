@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TypeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -34,6 +35,16 @@ class Type
     private $title;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Teams", mappedBy="type")
+     */
+    private $teams;
+
+    public function __construct()
+    {
+        $this->teams = new ArrayCollection();
+    }
+
+    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -59,4 +70,21 @@ class Type
 
         return $this;
     }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getTeams(): ArrayCollection
+    {
+        return $this->teams;
+    }
+
+    /**
+     * @param ArrayCollection $teams
+     */
+    public function setTeams(ArrayCollection $teams): void
+    {
+        $this->teams = $teams;
+    }
+
 }
