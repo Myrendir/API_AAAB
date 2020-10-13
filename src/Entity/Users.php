@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm
- * User: shadowluffy
+ * User: CONTE Alexandre
  * Date: 9/24/20
  * Time: 4:50 PM
  */
@@ -177,10 +177,10 @@ class Users implements UserInterface
     }
 
     /**
-     * @param string $summonerName
+     * @param string|null $summonerName
      * @return $this
      */
-    public function setSummonerName(string $summonerName): self
+    public function setSummonerName(?string $summonerName): self
     {
         $this->summonerName = $summonerName;
 
@@ -215,10 +215,10 @@ class Users implements UserInterface
     }
 
     /**
-     * @param string $password
+     * @param string|null $password
      * @return $this
      */
-    public function setPassword(string $password): self
+    public function setPassword(?string $password): self
     {
         $this->password = $password;
 
@@ -234,10 +234,10 @@ class Users implements UserInterface
     }
 
     /**
-     * @param string $plainPassword
+     * @param string|null $plainPassword
      * @return $this
      */
-    public function setPlainPassword(string $plainPassword): self
+    public function setPlainPassword(?string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
 
@@ -313,9 +313,9 @@ class Users implements UserInterface
     }
 
     /**
-     * @param $salt
+     * @param string|null $salt
      */
-    public function setSalt($salt)
+    public function setSalt(?string $salt)
     {
         $this->salt = $salt;
     }
@@ -335,4 +335,90 @@ class Users implements UserInterface
     {
         $this->plainPassword = null;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getTop(): ?Teams
+    {
+        return $this->top;
+    }
+
+    /**
+     * @param Teams|null $top
+     * @return $this
+     */
+    public function setTop(?Teams $top): self
+    {
+        $this->top = $top;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getJungle(): ?Teams
+    {
+        return $this->jungle;
+    }
+
+    /**
+     * @param Teams|null $jungle
+     * @return $this
+     */
+    public function setJungle(?Teams $jungle): self
+    {
+        $this->jungle = $jungle;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAdc(): ?Teams
+    {
+        return $this->adc;
+    }
+
+    /**
+     * @param Teams|null $adc
+     * @return $this
+     */
+    public function setAdc(?Teams $adc): self
+    {
+        $this->adc = $adc;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMid(): ?Teams
+    {
+        return $this->mid;
+    }
+
+    /**
+     * @param Teams|null $mid
+     * @return $this
+     */
+    public function setMid(?Teams $mid): self
+    {
+        $this->mid = $mid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSupport(): ?Teams
+    {
+        return $this->support;
+    }
+
+    /**
+     * @param Teams|null $support
+     * @return $this
+     */
+    public function setSupport(?Teams $support): self
+    {
+        $this->support = $support;
+    }
+
 }

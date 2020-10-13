@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm
- * User: shadowluffy
+ * User: CONTE Alexandre
  * Date: 9/25/20
  * Time: 3:41 PM
  */
@@ -35,6 +35,7 @@ class RegisterController extends AbstractController
      * @param ValidatorInterface $validator
      *
      * @return JsonResponse
+     *
      */
     public function registerUser(UserManager $userManager, Request $request, ValidatorInterface $validator)
     {

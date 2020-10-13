@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TeamsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -110,10 +111,10 @@ class Teams
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      * @return $this
      */
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -129,10 +130,10 @@ class Teams
     }
 
     /**
-     * @param array $type
+     * @param array|null $type
      * @return $this
      */
-    public function setType(array $type): self
+    public function setType(?array $type): self
     {
         $this->type = $type;
 
@@ -178,18 +179,18 @@ class Teams
     }
 
     /**
-     * @return string|null
+     * @return Collection|Users[]
      */
-    public function getTop(): ?string
+    public function getTop(): Collection
     {
         return $this->top;
     }
 
     /**
-     * @param string $top
+     * @param string|null $top
      * @return $this
      */
-    public function setTop(string $top): self
+    public function setTop(?string $top): self
     {
         $this->top = $top;
 
@@ -197,18 +198,18 @@ class Teams
     }
 
     /**
-     * @return string|null
+     * @return Collection|Users[]
      */
-    public function getJungle(): ?string
+    public function getJungle(): Collection
     {
         return $this->jungle;
     }
 
     /**
-     * @param string $jungle
+     * @param string|null $jungle
      * @return $this
      */
-    public function setJungle(string $jungle): self
+    public function setJungle(?string $jungle): self
     {
         $this->jungle = $jungle;
 
@@ -216,18 +217,18 @@ class Teams
     }
 
     /**
-     * @return string|null
+     * @return Collection|Users[]
      */
-    public function getMid(): ?string
+    public function getMid(): Collection
     {
         return $this->mid;
     }
 
     /**
-     * @param string $mid
+     * @param string|null $mid
      * @return $this
      */
-    public function setMid(string $mid): self
+    public function setMid(?string $mid): self
     {
         $this->mid = $mid;
 
@@ -235,18 +236,18 @@ class Teams
     }
 
     /**
-     * @return string|null
+     * @return Collection|Users[]
      */
-    public function getAdc(): ?string
+    public function getAdc(): Collection
     {
         return $this->adc;
     }
 
     /**
-     * @param string $adc
+     * @param string|null $adc
      * @return $this
      */
-    public function setAdc(string $adc): self
+    public function setAdc(?string $adc): self
     {
         $this->adc = $adc;
 
@@ -254,18 +255,18 @@ class Teams
     }
 
     /**
-     * @return string|null
+     * @return Collection|Users[]
      */
-    public function getSupport(): ?string
+    public function getSupport(): Collection
     {
         return $this->support;
     }
 
     /**
-     * @param string $support
+     * @param string|null $support
      * @return $this
      */
-    public function setSupport(string $support): self
+    public function setSupport(?string $support): self
     {
         $this->support = $support;
 

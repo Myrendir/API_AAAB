@@ -86,10 +86,10 @@ class Sanction
     }
 
     /**
-     * @param string $motif
+     * @param string|null $motif
      * @return $this
      */
-    public function setMotif(string $motif): self
+    public function setMotif(?string $motif): self
     {
         $this->motif = $motif;
 
