@@ -39,7 +39,7 @@ class AuthController extends AbstractController
     }
 
     /**
-     * @Route("/login_check", name="login_check")
+     * @Route("/login_check", name="login_check", methods={"POST"})
      *
      * @return JsonResponse
      */

@@ -12,6 +12,10 @@ use App\Repository\UsersRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Annotations\Items;
+use OpenApi\Annotations\Property;
+use OpenApi\Annotations\Schema;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -50,7 +54,7 @@ class Users implements UserInterface
      *     maxMessage="The field Summoner Name not must do superior at 16 characters",
      *     groups={"Register", "Profil"}
      * )
-     *
+     * @Property(type="string", uniqueItems=true)
      */
     private $summonerName;
 
@@ -64,11 +68,13 @@ class Users implements UserInterface
      *     message="This value is not a valid email address.",
      *     groups={"Profil"}
      * )
+     * @Property(type="string", maxLength=150, uniqueItems=true)
      */
     private $email;
 
     /**
      * @ORM\Column(name="password", type="string", length=255)
+     * @Property(type="string", property="plainPassword")
      */
     private $password;
 
@@ -92,8 +98,9 @@ class Users implements UserInterface
      *     message="The field Password must contains one number and one special character",
      *     groups={"Register", "Profil"}
      * )
+     * @Property(type="string", nullable=false)
      */
-    public $confirmPassword;
+    private $confirmPassword;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -111,22 +118,26 @@ class Users implements UserInterface
      *     message="The field Password must contains one number and one special character",
      *     groups={"Register", "Profil"}
      * )
+     * @Property(type="string", nullable=false)
      */
     private $plainPassword;
 
     /**
      * @ORM\Column(name="availability", type="boolean")
+     * @Property(type="boolean", default="true")
      */
     private $availability;
 
     /**
      * @ORM\Column(name="is_enabled", type="boolean")
+     * @Property(type="boolean", default="true")
      */
     private $isEnabled;
 
     /**
      * @ORM\Column(name="roles", type="json")
      * @Assert\NotBlank(message="The field Roles is missing.")
+     * @Property(type="array", @Items(type="json"), default="ROLE_USER")
      */
     private $roles = [];
 
@@ -226,6 +237,14 @@ class Users implements UserInterface
     }
 
     /**
+     * @return mixed
+     */
+    public function getConfirmPassword()
+    {
+        return $this->confirmPassword;
+    }
+
+    /**
      * @return string|null
      */
     public function getPlainPassword(): ?string
@@ -322,6 +341,7 @@ class Users implements UserInterface
 
     /**
      * @return string
+     * @Property(type="string", property="summonerName")
      */
     public function getUsername()
     {

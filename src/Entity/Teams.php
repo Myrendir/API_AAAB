@@ -8,10 +8,19 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use OpenApi\Annotations\Items;
+use OpenApi\Annotations\Property;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TeamsRepository::class)
+ * @UniqueEntity(
+ *     fields={"name"},
+ *     message="The name is already to use"
+ * )
+ *
+ * @author CONTE Alexandre <pro.alexandre.conte@gmail.com>
  */
 class Teams
 {
@@ -38,7 +47,7 @@ class Teams
     private $name;
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Type", inversedBy="teams")
      */
     private $type = [];
 
@@ -122,22 +131,19 @@ class Teams
     }
 
     /**
-     * @return array|null
+     * @return array
      */
-    public function getType(): ?array
+    public function getType(): array
     {
         return $this->type;
     }
 
     /**
-     * @param array|null $type
-     * @return $this
+     * @param array $type
      */
-    public function setType(?array $type): self
+    public function setType(array $type): void
     {
         $this->type = $type;
-
-        return $this;
     }
 
     /**
@@ -179,97 +185,100 @@ class Teams
     }
 
     /**
-     * @return Collection|Users[]
+     * @return string
      */
-    public function getTop(): Collection
+    public function getCreatedBy(): string
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * @param string $createdBy
+     */
+    public function setCreatedBy(string $createdBy): void
+    {
+        $this->createdBy = $createdBy;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getTop(): ArrayCollection
     {
         return $this->top;
     }
 
     /**
-     * @param string|null $top
-     * @return $this
+     * @param ArrayCollection $top
      */
-    public function setTop(?string $top): self
+    public function setTop(ArrayCollection $top): void
     {
         $this->top = $top;
-
-        return $this;
     }
 
     /**
-     * @return Collection|Users[]
+     * @return ArrayCollection
      */
-    public function getJungle(): Collection
+    public function getJungle(): ArrayCollection
     {
         return $this->jungle;
     }
 
     /**
-     * @param string|null $jungle
-     * @return $this
+     * @param ArrayCollection $jungle
      */
-    public function setJungle(?string $jungle): self
+    public function setJungle(ArrayCollection $jungle): void
     {
         $this->jungle = $jungle;
-
-        return $this;
     }
 
     /**
-     * @return Collection|Users[]
+     * @return ArrayCollection
      */
-    public function getMid(): Collection
+    public function getMid(): ArrayCollection
     {
         return $this->mid;
     }
 
     /**
-     * @param string|null $mid
-     * @return $this
+     * @param ArrayCollection $mid
      */
-    public function setMid(?string $mid): self
+    public function setMid(ArrayCollection $mid): void
     {
         $this->mid = $mid;
-
-        return $this;
     }
 
     /**
-     * @return Collection|Users[]
+     * @return ArrayCollection
      */
-    public function getAdc(): Collection
+    public function getAdc(): ArrayCollection
     {
         return $this->adc;
     }
 
     /**
-     * @param string|null $adc
-     * @return $this
+     * @param ArrayCollection $adc
      */
-    public function setAdc(?string $adc): self
+    public function setAdc(ArrayCollection $adc): void
     {
         $this->adc = $adc;
-
-        return $this;
     }
 
     /**
-     * @return Collection|Users[]
+     * @return ArrayCollection
      */
-    public function getSupport(): Collection
+    public function getSupport(): ArrayCollection
     {
         return $this->support;
     }
 
     /**
-     * @param string|null $support
-     * @return $this
+     * @param ArrayCollection $support
      */
-    public function setSupport(?string $support): self
+    public function setSupport(ArrayCollection $support): void
     {
         $this->support = $support;
-
-        return $this;
     }
+
+
 }
