@@ -167,7 +167,7 @@ class Users implements UserInterface
     private $mid;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="support")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Teams", inversedBy="support")
      */
     private $support;
 
