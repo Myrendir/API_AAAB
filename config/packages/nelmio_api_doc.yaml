@@ -20,5 +20,5 @@ nelmio_api_doc:
             - { alias: Report, type: App\Entity\Report }
     areas: # to filter documented areas
         path_patterns:
-            - ^/api²
+            - ^/api
             - ^/user
