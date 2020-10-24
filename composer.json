@@ -17,6 +17,8 @@
         "lexik/jwt-authentication-bundle": "^2.8",
         "nelmio/api-doc-bundle": "^4.0",
         "nelmio/cors-bundle": "^2.1",
+        "sonata-project/admin-bundle": "^3.78",
+        "sonata-project/doctrine-orm-admin-bundle": "^3.24",
         "stof/doctrine-extensions-bundle": "^1.4",
         "symfony/asset": "4.4.*",
         "symfony/console": "4.4.*",
