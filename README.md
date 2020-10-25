@@ -24,26 +24,23 @@ git clone git@github.com:Myrendir/API_AAAB.git
 
 #### Second Step
 Create the file .env.local and update the variable DATABASE_URL
-Create the docker.env and add this variable:
-```
-MYSQL_ROOT_PASSWORD=
-MYSQL_DATABASE=
-MYSQL_USER=
-MYSQL_PASSWORD=
-```
-!! This variables, she is same in the .env.local for DATABASE_URL except MYSQL_ROOT_PASSWORD
 
 #### Third Step
 Run this command : 
 ```
-cd docker/nginx-proxy/
-docker network create nginx-proxy
-docker-compose up -d
-cd ..
-cd ..
-docker-compose build
-docker-compose up -d
-sudo chown -R userlocal:userlocal vendor var
+composer install
+```
+
+#### Four Step
+Create the database :
+```
+./bin/console doctrine:schema:update --force
+```
+
+#### Load Fixtures
+Run this command :
+```
+./bin/console doctrine:datafixtures:load
 ```
 
 The project is already for the development
