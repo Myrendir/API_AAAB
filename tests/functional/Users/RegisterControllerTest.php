@@ -24,6 +24,9 @@ class RegisterControllerTest extends \Codeception\Test\Unit
     {
         $this->tester->wantTo('register a new account');
 
+        /**
+         * Register new user
+         */
         $this->tester->sendPostJson('/user/register', [
             'summonerName' => 'Alex',
             'password' => 'michelle1',
@@ -33,6 +36,22 @@ class RegisterControllerTest extends \Codeception\Test\Unit
         $this->tester->seeResponseContainsJson([0 => 'User Created']);
         $this->tester->seeResponseCodeIsSuccessful();
 
+        /**
+         * Try to login
+         */
+        $this->tester->sendPostJson('/api/login', [
+            'username' => 'Alex',
+            'password' => 'michelle1'
+        ]);
+        $this->tester->seeResponseCodeIs(HttpCode::OK);
+
+    }
+
+    public function testSummonerNameEmpty()
+    {
+        /**
+         * Summoner Name empty
+         */
         $this->tester->sendPostJson('/user/register', [
             'summonerName' => '',
             'password' => 'michelle1',

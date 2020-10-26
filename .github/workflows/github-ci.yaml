@@ -36,6 +36,11 @@ jobs:
     - name: Create Database
       run: ./bin/console doctrine:schema:update --force --env=test
 
+    - name: JWT
+      run: |
+        - openssl genrsa -out release/var/jwt/private.pem -aes256 -passout pass:toto 4096
+        - openssl rsa -pubout -in release/var/jwt/private.pem -out release/var/jwt/public.pem -passin pass:toto
+
     - name: Unit Test
       run: ./vendor/bin/codecept run unit
 
