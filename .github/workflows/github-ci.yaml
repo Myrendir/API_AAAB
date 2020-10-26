@@ -40,7 +40,7 @@ jobs:
       run: |
         mkdir -p config/jwt/
         openssl genrsa -out config/jwt/private.pem -aes256 -passout pass:toto 4096
-        openssl rsa -pubout -in config/jwt/private.pem -out release/var/jwt/public.pem -passin pass:toto
+        openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem -passin pass:toto
 
     - name: Unit Test
       run: ./vendor/bin/codecept run unit
