@@ -6,6 +6,9 @@
 parameters:
     base_host: '%env(BASE_HOST)%'
 
+imports:
+    - { resource: services/admin.yml }
+
 services:
     # default configuration for services in *this* file
     _defaults:

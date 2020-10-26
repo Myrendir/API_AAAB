@@ -23,4 +23,9 @@ class FunctionalTester extends \Codeception\Actor
    /**
     * Define custom actions here
     */
+
+    public function sendPostJson(string $url, array $jsonContent, array $files = [])
+    {
+        $this->sendPost($url, json_encode($jsonContent), $files);
+    }
 }

@@ -1,4 +1,6 @@
-<?php namespace App\Tests;
+<?php
+
+namespace App\Tests;
 
 class FakeTest extends \Codeception\Test\Unit
 {
@@ -18,7 +20,6 @@ class FakeTest extends \Codeception\Test\Unit
     // tests
     public function testSomeFeature()
     {
-        $test = 'hello';
-        $this->assertEquals('hello', $test);
+
     }
 }

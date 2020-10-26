@@ -93,14 +93,9 @@ class Users implements UserInterface
      *     minMessage="The field Confirmation must do minimum 8 characters",
      *     groups={"Regsiter", "Profil"}
      * )
-     * @Assert\Regex(
-     *     pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$",
-     *     message="The field Password must contains one number and one special character",
-     *     groups={"Register", "Profil"}
-     * )
      * @Property(type="string", nullable=false)
      */
-    private $confirmPassword;
+    public $confirmPassword;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -111,11 +106,6 @@ class Users implements UserInterface
      * @Assert\Length(
      *     min="8",
      *     minMessage="The field Password must do 8 characters minimum",
-     *     groups={"Register", "Profil"}
-     * )
-     * @Assert\Regex(
-     *     pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$",
-     *     message="The field Password must contains one number and one special character",
      *     groups={"Register", "Profil"}
      * )
      * @Property(type="string", nullable=false)
