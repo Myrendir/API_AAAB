@@ -13,6 +13,7 @@ use App\Repository\UsersRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
+use phpDocumentor\Reflection\Types\Object_;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -83,7 +84,7 @@ class UserManager
         }
     }
 
-    public function save(Users $users, $andFlush = true)
+    public function save($users, $andFlush = true)
     {
         $this->updatePassword($users);
 

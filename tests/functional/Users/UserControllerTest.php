@@ -74,4 +74,35 @@ class UserControllerTest extends \Codeception\Test\Unit
         $this->tester->seeResponseContainsJson(['summoner_name' => 'Michel']);
         $this->tester->seeResponseCodeIs(HttpCode::OK);
     }
+
+    public function testEditProfile()
+    {
+        /**
+         * Register a new user for Auth
+         */
+        $this->tester->sendPostJson('/user/register', [
+            'summonerName' => 'Michel',
+            'email' => 'michel@example.com',
+            'password' => 'michelle1',
+            'confirmPassword' => 'michelle1'
+        ]);
+        /**
+         * Try to recover the token with the new user
+         */
+        $this->tester->createAuthenticatedClient('Michel', 'michelle1');
+        /**
+         * Try to edit the profile
+         */
+        $this->tester->sendPatchJson('/api/user/edit', [
+            'summonerName' => 'Luffy',
+            'email' => 'luffy@example.com',
+            'availability' => false
+        ]);
+        /**
+         * Verify the response is exactly at the content
+         */
+        $this->tester->seeResponseContainsJson([0 => 'User Update']);
+        $this->tester->seeResponseCodeIs(HttpCode::OK);
+
+    }
 }

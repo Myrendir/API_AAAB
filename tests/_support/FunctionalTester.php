@@ -48,4 +48,9 @@ class FunctionalTester extends \Codeception\Actor
     {
         $this->sendPost($url, json_encode($jsonContent), $files);
     }
+
+    public function sendPatchJson(string $url, array $jsonContent, array $files = [])
+    {
+        $this->sendPatch($url, json_encode($jsonContent), $files);
+    }
 }

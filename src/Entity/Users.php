@@ -24,7 +24,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity(
  *     fields={"summonerName"},
  *     message="This summonerName is already used.",
- *     groups={"Register", "Profil"}
+ *     groups={"Register", "Profile"}
+ * )
+ * @UniqueEntity(
+ *     fields={"email"},
+ *     message="This email is already used",
+ *     groups={"Register", "Profile"}
  * )
  *
  * @author CONTE Alexandre <pro.alexandre.conte@gmail.com>
@@ -45,14 +50,14 @@ class Users implements UserInterface
      * @ORM\Column(name="summoner_name", type="string", length=16, unique=true)
      * @Assert\NotBlank(
      *     message="The field Summoner Name is missing.",
-     *     groups={"Register", "Profil"}
+     *     groups={"Register", "Profile"}
      * )
      * @Assert\Length(
      *     min="3",
      *     minMessage="The field Summoner Name must do minimum 3 characters",
      *     max="16",
      *     maxMessage="The field Summoner Name not must do superior at 16 characters",
-     *     groups={"Register", "Profil"}
+     *     groups={"Register", "Profile"}
      * )
      * @Property(type="string", uniqueItems=true)
      * @Serializer\Groups(groups={"User"})
@@ -63,11 +68,11 @@ class Users implements UserInterface
      * @ORM\Column(name="email", type="string", length=150, nullable=true, unique=true)
      * @Assert\NotBlank(
      *     message="The field Email is missing.",
-     *     groups={"Profil", "Register"}
+     *     groups={"Profile", "Register"}
      * )
      * @Assert\Email(
      *     message="This value is not a valid email address.",
-     *     groups={"Profil", "Register"}
+     *     groups={"Profile", "Register"}
      * )
      * @Property(type="string", maxLength=150, uniqueItems=true)
      * @Serializer\Groups(groups={"User"})
@@ -84,16 +89,16 @@ class Users implements UserInterface
      * @Assert\EqualTo(
      *     propertyPath="plainPassword",
      *     message="The field Confirmation were not equal to Password.",
-     *     groups={"Register", "Profil"}
+     *     groups={"Register"}
      * )
      * @Assert\NotBlank(
      *     message="The field Confirmation is missing.",
-     *     groups={"Register", "Profil"}
+     *     groups={"Register"}
      * )
      * @Assert\Length(
      *     min="8",
      *     minMessage="The field Confirmation must do minimum 8 characters",
-     *     groups={"Regsiter", "Profil"}
+     *     groups={"Regsiter"}
      * )
      * @Property(type="string", nullable=false)
      */
@@ -103,12 +108,12 @@ class Users implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\NotBlank(
      *     message="The field Password is missing.",
-     *     groups={"Register", "Profil"}
+     *     groups={"Register"}
      * )
      * @Assert\Length(
      *     min="8",
      *     minMessage="The field Password must do 8 characters minimum",
-     *     groups={"Register", "Profil"}
+     *     groups={"Register"}
      * )
      * @Property(type="string", nullable=false)
      */
@@ -117,6 +122,7 @@ class Users implements UserInterface
     /**
      * @ORM\Column(name="availability", type="boolean")
      * @Property(type="boolean", default="true")
+     * @Serializer\Groups(groups={"User"})
      */
     private $availability;
 
