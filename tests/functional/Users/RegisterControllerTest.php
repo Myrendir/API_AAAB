@@ -8,6 +8,7 @@ class RegisterControllerTest extends \Codeception\Test\Unit
 {
     protected $summonerName = 'Alex';
     protected $password = 'michelle1';
+    protected $email = 'michel@example.com';
     /**
      * @var \App\Tests\FunctionalTester
      */
@@ -29,6 +30,7 @@ class RegisterControllerTest extends \Codeception\Test\Unit
          */
         $this->tester->sendPostJson('/user/register', [
             'summonerName' => $this->summonerName,
+            'email' => $this->email,
             'password' => $this->password,
             'confirmPassword' => $this->password
         ]);
@@ -53,6 +55,7 @@ class RegisterControllerTest extends \Codeception\Test\Unit
          */
         $this->tester->sendPostJson('/user/register', [
             'summonerName' => '',
+            'email' => $this->email,
             'password' => $this->password,
             'confirmPassword' => $this->password
         ]);
@@ -68,6 +71,7 @@ class RegisterControllerTest extends \Codeception\Test\Unit
          */
         $this->tester->sendPostJson('/user/register', [
             'summonerName' => $this->summonerName,
+            'email' => $this->email,
             'password' => $this->password,
             'confirmPassword' => 'michel'
         ]);
@@ -83,6 +87,7 @@ class RegisterControllerTest extends \Codeception\Test\Unit
          */
         $this->tester->sendPostJson('/user/register', [
             'summonerName' => $this->summonerName,
+            'email' => $this->email,
             'password' => $this->password,
             'confirmPassword' => $this->password
         ]);
@@ -92,6 +97,7 @@ class RegisterControllerTest extends \Codeception\Test\Unit
          */
         $this->tester->sendPostJson('/user/register', [
             'summonerName' => $this->summonerName,
+            'email' => $this->email,
             'password' => $this->password,
             'confirmPassword' => $this->password
         ]);

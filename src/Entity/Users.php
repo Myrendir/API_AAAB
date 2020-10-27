@@ -12,6 +12,7 @@ use App\Repository\UsersRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use JMS\Serializer\Annotation as Serializer;
 use OpenApi\Annotations\Items;
 use OpenApi\Annotations\Property;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -54,6 +55,7 @@ class Users implements UserInterface
      *     groups={"Register", "Profil"}
      * )
      * @Property(type="string", uniqueItems=true)
+     * @Serializer\Groups(groups={"User"})
      */
     private $summonerName;
 
@@ -61,13 +63,14 @@ class Users implements UserInterface
      * @ORM\Column(name="email", type="string", length=150, nullable=true, unique=true)
      * @Assert\NotBlank(
      *     message="The field Email is missing.",
-     *     groups={"Profil"}
+     *     groups={"Profil", "Register"}
      * )
      * @Assert\Email(
      *     message="This value is not a valid email address.",
-     *     groups={"Profil"}
+     *     groups={"Profil", "Register"}
      * )
      * @Property(type="string", maxLength=150, uniqueItems=true)
+     * @Serializer\Groups(groups={"User"})
      */
     private $email;
 
@@ -137,26 +140,31 @@ class Users implements UserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Teams", inversedBy="top")
+     * @Serializer\Groups(groups={"Users"})
      */
     private $top;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Teams", inversedBy="jungle")
+     * @Serializer\Groups(groups={"Users"})
      */
     private $jungle;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Teams", inversedBy="adc")
+     * @Serializer\Groups(groups={"Users"})
      */
     private $adc;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Teams", inversedBy="mid")
+     * @Serializer\Groups(groups={"Users"})
      */
     private $mid;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Teams", inversedBy="support")
+     * @Serializer\Groups(groups={"Users"})
      */
     private $support;
 

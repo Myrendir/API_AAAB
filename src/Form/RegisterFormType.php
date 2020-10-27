@@ -10,6 +10,7 @@ namespace App\Form;
 
 use App\Entity\Users;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -33,6 +34,7 @@ class RegisterFormType extends AbstractType
             ->add('summonerName', TextType::class, [
                 'label' => 'Summoner Name',
             ])
+            ->add('email', EmailType::class)
             ->add('password', PasswordType::class, [
                 'property_path' => 'plainPassword',
                 'label' => 'Password'
@@ -51,9 +53,6 @@ class RegisterFormType extends AbstractType
         $resolver
             ->setDefaults([
                 'data_class' => Users::class,
-                'attr' => [
-                    'id' => 'form'
-                ]
             ])
         ;
     }
