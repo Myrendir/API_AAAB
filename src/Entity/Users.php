@@ -12,10 +12,8 @@ use App\Repository\UsersRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations\Items;
 use OpenApi\Annotations\Property;
-use OpenApi\Annotations\Schema;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -24,7 +22,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass=UsersRepository::class)
  * @UniqueEntity(
  *     fields={"summonerName"},
- *     message="This summonerName is already used."
+ *     message="This summonerName is already used.",
+ *     groups={"Register", "Profil"}
  * )
  *
  * @author CONTE Alexandre <pro.alexandre.conte@gmail.com>
@@ -42,7 +41,7 @@ class Users implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(name="summoner_name", type="string", length=16)
+     * @ORM\Column(name="summoner_name", type="string", length=16, unique=true)
      * @Assert\NotBlank(
      *     message="The field Summoner Name is missing.",
      *     groups={"Register", "Profil"}
@@ -59,7 +58,7 @@ class Users implements UserInterface
     private $summonerName;
 
     /**
-     * @ORM\Column(name="email", type="string", length=150, nullable=true)
+     * @ORM\Column(name="email", type="string", length=150, nullable=true, unique=true)
      * @Assert\NotBlank(
      *     message="The field Email is missing.",
      *     groups={"Profil"}
@@ -93,14 +92,9 @@ class Users implements UserInterface
      *     minMessage="The field Confirmation must do minimum 8 characters",
      *     groups={"Regsiter", "Profil"}
      * )
-     * @Assert\Regex(
-     *     pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$",
-     *     message="The field Password must contains one number and one special character",
-     *     groups={"Register", "Profil"}
-     * )
      * @Property(type="string", nullable=false)
      */
-    private $confirmPassword;
+    public $confirmPassword;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -111,11 +105,6 @@ class Users implements UserInterface
      * @Assert\Length(
      *     min="8",
      *     minMessage="The field Password must do 8 characters minimum",
-     *     groups={"Register", "Profil"}
-     * )
-     * @Assert\Regex(
-     *     pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$",
-     *     message="The field Password must contains one number and one special character",
      *     groups={"Register", "Profil"}
      * )
      * @Property(type="string", nullable=false)

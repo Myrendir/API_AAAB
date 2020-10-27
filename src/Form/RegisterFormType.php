@@ -31,14 +31,14 @@ class RegisterFormType extends AbstractType
     {
         $builder
             ->add('summonerName', TextType::class, [
-                'label' => 'Summoner Name'
+                'label' => 'Summoner Name',
             ])
             ->add('password', PasswordType::class, [
                 'property_path' => 'plainPassword',
                 'label' => 'Password'
             ])
             ->add('confirmPassword', PasswordType::class, [
-                'label' => 'Confirmation'
+                'label' => 'Confirmation',
             ])
         ;
     }
@@ -51,6 +51,9 @@ class RegisterFormType extends AbstractType
         $resolver
             ->setDefaults([
                 'data_class' => Users::class,
+                'attr' => [
+                    'id' => 'form'
+                ]
             ])
         ;
     }
