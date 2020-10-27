@@ -1,6 +1,9 @@
 <?php
 namespace App\Tests;
 
+use App\Entity\Users;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 /**
  * Inherited Methods
  * @method void wantToTest($text)
@@ -24,8 +27,30 @@ class FunctionalTester extends \Codeception\Actor
     * Define custom actions here
     */
 
+    /**
+     * @param string $username
+     * @param string $password
+     * @return mixed
+     */
+    public function createAuthenticatedClient($username = 'user', $password = 'password')
+    {
+        try {
+            $user = $this->grabEntityFromRepository(Users::class, ['summonerName' => $username]);
+            $jwtManager = $this->grabService('test.lexik_jwt_authentication.jwt_manager');
+            $token = $jwtManager->create($user);
+            $this->amBearerAuthenticated($token);
+        } catch (\Exception $exception) {
+            return new JsonResponse(sprintf('Unable to login as "%s" using password "%s"', $username, $password));
+        }
+    }
+
     public function sendPostJson(string $url, array $jsonContent, array $files = [])
     {
         $this->sendPost($url, json_encode($jsonContent), $files);
+    }
+
+    public function sendPatchJson(string $url, array $jsonContent, array $files = [])
+    {
+        $this->sendPatch($url, json_encode($jsonContent), $files);
     }
 }

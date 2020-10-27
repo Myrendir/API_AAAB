@@ -11,6 +11,9 @@ namespace App\Manager;
 use App\Entity\Users;
 use App\Repository\UsersRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use JMS\Serializer\SerializationContext;
+use JMS\Serializer\SerializerBuilder;
+use phpDocumentor\Reflection\Types\Object_;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -26,6 +29,7 @@ class UserManager
     protected $userRepository;
     protected $passwordEncoder;
     protected $logger;
+    protected $serializer;
 
     /**
      * UserManager constructor.
@@ -45,6 +49,7 @@ class UserManager
         $this->userRepository = $usersRepository;
         $this->passwordEncoder = $passwordEncoder;
         $this->logger = $logger;
+        $this->serializer = SerializerBuilder::create()->build();
     }
 
     public function createUser()
@@ -56,6 +61,20 @@ class UserManager
         return $user;
     }
 
+    public function getAllUsers()
+    {
+        $users = $this->userRepository->findAll();
+        $jsonContent = $this->serializer->serialize($users, 'json', SerializationContext::create()->setGroups(['User']));
+        return $jsonContent;
+    }
+
+    public function getUserBySummonerName(string $summonerName)
+    {
+        $user = $this->userRepository->findOneBySummonerName(['summonerName' => $summonerName]);
+        $jsonContent = $this->serializer->serialize($user, 'json', SerializationContext::create()->setGroups(['User']));
+        return $jsonContent;
+    }
+
     public function updatePassword(Users $users)
     {
         if (0 !== strlen($password = $users->getPlainPassword())) {
@@ -65,7 +84,7 @@ class UserManager
         }
     }
 
-    public function save(Users $users, $andFlush = true)
+    public function save($users, $andFlush = true)
     {
         $this->updatePassword($users);
 
