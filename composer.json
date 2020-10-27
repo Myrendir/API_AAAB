@@ -41,6 +41,8 @@
         "codeception/module-doctrine2": "^1.0",
         "codeception/module-rest": "^1.2",
         "codeception/module-symfony": "^1.1",
+        "doctrine/doctrine-fixtures-bundle": "^3.3",
+        "fzaninotto/faker": "^1.9",
         "justinrainbow/json-schema": "^5.2",
         "symfony/maker-bundle": "^1.21"
     },

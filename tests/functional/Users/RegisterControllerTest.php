@@ -2,13 +2,11 @@
 
 namespace App\Tests;
 
+use App\Tests\_data\fixtures\UsersFixtures;
 use Codeception\Util\HttpCode;
 
 class RegisterControllerTest extends \Codeception\Test\Unit
 {
-    protected $summonerName = 'Alex';
-    protected $password = 'michelle1';
-    protected $email = 'michel@example.com';
     /**
      * @var \App\Tests\FunctionalTester
      */
@@ -16,6 +14,7 @@ class RegisterControllerTest extends \Codeception\Test\Unit
     
     protected function _before()
     {
+        $this->tester->loadFixtures(UsersFixtures::class, false);
     }
 
     protected function _after()
@@ -29,10 +28,10 @@ class RegisterControllerTest extends \Codeception\Test\Unit
          * Register new user
          */
         $this->tester->sendPostJson('/user/register', [
-            'summonerName' => $this->summonerName,
-            'email' => $this->email,
-            'password' => $this->password,
-            'confirmPassword' => $this->password
+            'summonerName' => 'Luffy',
+            'email' => 'luffy@example.com',
+            'password' => 'michelle1',
+            'confirmPassword' => 'michelle1'
         ]);
 
         $this->tester->seeResponseContainsJson([0 => 'User Created']);
@@ -42,8 +41,8 @@ class RegisterControllerTest extends \Codeception\Test\Unit
          * Try to login
          */
         $this->tester->sendPostJson('/api/login', [
-            'username' => $this->summonerName,
-            'password' => $this->password,
+            'username' => 'Michel',
+            'password' => 'michelle1',
         ]);
         $this->tester->seeResponseCodeIs(HttpCode::OK);
     }
@@ -55,9 +54,9 @@ class RegisterControllerTest extends \Codeception\Test\Unit
          */
         $this->tester->sendPostJson('/user/register', [
             'summonerName' => '',
-            'email' => $this->email,
-            'password' => $this->password,
-            'confirmPassword' => $this->password
+            'email' => 'luffy@example.com',
+            'password' => 'michelle1',
+            'confirmPassword' => 'michelle1'
         ]);
 
         $this->tester->seeResponseContainsJson([0 => 'The field Summoner Name is missing.']);
@@ -70,9 +69,9 @@ class RegisterControllerTest extends \Codeception\Test\Unit
          * confirmPassword not equal
          */
         $this->tester->sendPostJson('/user/register', [
-            'summonerName' => $this->summonerName,
-            'email' => $this->email,
-            'password' => $this->password,
+            'summonerName' => 'Luffy',
+            'email' => 'luffy@example.com',
+            'password' => 'michelle1',
             'confirmPassword' => 'michel'
         ]);
 
@@ -86,20 +85,10 @@ class RegisterControllerTest extends \Codeception\Test\Unit
          * Register new user
          */
         $this->tester->sendPostJson('/user/register', [
-            'summonerName' => $this->summonerName,
-            'email' => $this->email,
-            'password' => $this->password,
-            'confirmPassword' => $this->password
-        ]);
-
-        /**
-         * Register new user but same Summoner Name
-         */
-        $this->tester->sendPostJson('/user/register', [
-            'summonerName' => $this->summonerName,
-            'email' => $this->email,
-            'password' => $this->password,
-            'confirmPassword' => $this->password
+            'summonerName' => 'Michel',
+            'email' => 'luffy@example.com',
+            'password' => 'michelle1',
+            'confirmPassword' => 'michelle1'
         ]);
         $this->tester->seeResponseContainsJson([0 => 'This summonerName is already used.']);
         $this->tester->seeResponseCodeIs(HttpCode::BAD_REQUEST);

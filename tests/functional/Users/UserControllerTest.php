@@ -2,6 +2,7 @@
 
 namespace App\Tests;
 
+use App\Tests\_data\fixtures\UsersFixtures;
 use Codeception\Util\HttpCode;
 
 class UserControllerTest extends \Codeception\Test\Unit
@@ -13,6 +14,7 @@ class UserControllerTest extends \Codeception\Test\Unit
     
     protected function _before()
     {
+        $this->tester->loadFixtures(UsersFixtures::class, false);
     }
 
     protected function _after()
@@ -22,24 +24,6 @@ class UserControllerTest extends \Codeception\Test\Unit
     // tests
     public function testGetAllUsers()
     {
-        /**
-         * Register a new user for Auth
-         */
-        $this->tester->sendPostJson('/user/register', [
-            'summonerName' => 'Michel',
-            'email' => 'michel@example.com',
-            'password' => 'michelle1',
-            'confirmPassword' => 'michelle1'
-        ]);
-        $this->tester->sendPostJson('/user/register', [
-            'summonerName' => 'Alex',
-            'email' => 'alex@example.com',
-            'password' => 'michelle1',
-            'confirmPassword' => 'michelle1'
-        ]);
-        /**
-         * Try to recover the token with the new user
-         */
         $this->tester->createAuthenticatedClient('Michel', 'michelle1');
         /**
          * Request get for the url
@@ -55,15 +39,6 @@ class UserControllerTest extends \Codeception\Test\Unit
     public function testGetUserBySummonerName()
     {
         /**
-         * Register a new user for Auth
-         */
-        $this->tester->sendPostJson('/user/register', [
-            'summonerName' => 'Michel',
-            'email' => 'michel@example.com',
-            'password' => 'michelle1',
-            'confirmPassword' => 'michelle1'
-        ]);
-        /**
          * Try to recover the token with the new user
          */
         $this->tester->createAuthenticatedClient('Michel', 'michelle1');
@@ -77,15 +52,6 @@ class UserControllerTest extends \Codeception\Test\Unit
 
     public function testEditProfile()
     {
-        /**
-         * Register a new user for Auth
-         */
-        $this->tester->sendPostJson('/user/register', [
-            'summonerName' => 'Michel',
-            'email' => 'michel@example.com',
-            'password' => 'michelle1',
-            'confirmPassword' => 'michelle1'
-        ]);
         /**
          * Try to recover the token with the new user
          */
@@ -102,7 +68,15 @@ class UserControllerTest extends \Codeception\Test\Unit
          * Verify the response is exactly at the content
          */
         $this->tester->seeResponseContainsJson([0 => 'User Update']);
+        /**
+         * Try new Auth
+         */
+        $this->tester->createAuthenticatedClient('Luffy', 'michelle1');
+        /**
+         * Check if user exist and the content correspond
+         */
+        $this->tester->sendGet('/api/user/get/Luffy');
+        $this->tester->seeResponseContainsJson(['summoner_name' => 'Luffy']);
         $this->tester->seeResponseCodeIs(HttpCode::OK);
-
     }
 }
