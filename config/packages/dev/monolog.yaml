@@ -1,0 +1,26 @@
+monolog:
+    handlers:
+        main:
+            type:         fingers_crossed
+            action_level: error
+            handler:      grouped
+        grouped:
+            type:    group
+            members: [streamed, deduplicated]
+        streamed:
+            type:  stream
+            path:  '%kernel.logs_dir%/%kernel.environment%.log'
+            level: error
+        deduplicated:
+            type:    deduplication
+            time: 1
+            handler: swift
+        swift:
+            type:         swift_mailer
+            from_email:   '%env(MONOLOG_FROM_EMAIL)%'
+            to_email:     '%env(MONOLOG_TO_EMAIL)%'
+            subject:      '%env(MONOLOG_EMAIL_SUBJECT)%'
+            level:        error
+            formatter:    monolog.formatter.html
+            content_type: text/html
+            action_level: error
