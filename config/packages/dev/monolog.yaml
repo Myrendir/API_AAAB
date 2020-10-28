@@ -1,0 +1,25 @@
+monolog:
+    handlers:
+        main:
+            type:         fingers_crossed
+            action_level: error
+            handler:      grouped
+            excluded_http_codes:
+                - 400
+                - 405
+        grouped:
+            type:    group
+            members: [streamed, deduplicated]
+        streamed:
+            type:  stream
+            path:  '%kernel.logs_dir%/%kernel.environment%.log'
+            level: debug
+        deduplicated:
+            type:    deduplication
+            handler: swift
+        swift:
+            type:         swift_mailer
+            from_email:   '%env(MONOLOG_FROM_EMAIL)%'
+            to_email:     '%env(MONOLOG_TO_EMAIL)%'
+            subject:      '%env(MONOLOG_EMAIL_SUBJECT)%'
+            level:        error
