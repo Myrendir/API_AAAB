@@ -1,7 +1,7 @@
 version: "3.1"
 
 services:
-    mail_api_aaab:
+    mailhog:
       image: mailhog/mailhog:latest
       container_name: mail_api_aaab
       environment:
@@ -10,7 +10,7 @@ services:
       networks:
         - nginx-proxy
 
-    db_api_aaab:
+    mariadb:
       image: mariadb
       container_name: db_api_aaab
       restart: always
@@ -19,7 +19,7 @@ services:
       networks:
         - nginx-proxy
 
-    admindb_api_aaab:
+    adminer:
       image: adminer
       container_name: admindb_api_aaab
       restart: always
@@ -30,7 +30,7 @@ services:
       networks:
         - nginx-proxy
 
-    webserver_api_aaab:
+    webserver:
       image: nginx:alpine
       container_name: webserver_api_aaab
       working_dir: /var/www/api-aaab
@@ -44,7 +44,7 @@ services:
       networks:
         - nginx-proxy
 
-    php_api_aaab:
+    php-fpm:
       build: docker/php-fpm
       container_name: php_api_aaab
       working_dir: /var/www/api-aaab
