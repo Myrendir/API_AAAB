@@ -145,6 +145,11 @@ class Users implements UserInterface
     private $salt;
 
     /**
+     * @ORM\Column(name="token", type="string", nullable=true)
+     */
+    private $token;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Teams", inversedBy="top")
      * @Serializer\Groups(groups={"Users"})
      */
@@ -349,6 +354,22 @@ class Users implements UserInterface
     public function setSalt(?string $salt)
     {
         $this->salt = $salt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param mixed $token
+     */
+    public function setToken($token): void
+    {
+        $this->token = $token;
     }
 
     /**
