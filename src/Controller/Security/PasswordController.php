@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class PasswordController extends AbstractController
 {
     /**
-     * @Route("/forgot", name="forgot", methods={"GET", "POST"})
+     * @Route("/forgot", name="forgot", methods={"POST"})
      *
      * @param Request $request
      * @param UserManager $userManager
