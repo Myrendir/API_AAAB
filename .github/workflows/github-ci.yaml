@@ -30,7 +30,6 @@ jobs:
           ${{ runner.os }}-php-
     - name: Install dependencies
       run: |
-        composer self-update --snapshot
         composer install --prefer-dist --no-progress
     - name: Create Database
       run: ./bin/console doctrine:schema:update --force --env=test
