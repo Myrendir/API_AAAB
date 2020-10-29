@@ -8,6 +8,8 @@
 
 namespace App\Admin;
 
+use App\Entity\Users;
+use App\Manager\UserManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -24,31 +26,92 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
  */
 class UsersAdmin extends AbstractAdmin
 {
-    public function toString($object)
-    {
+    /**
+     * @var UserManager
+     */
+    protected $userManager;
 
+    /**
+     * UsersAdmin constructor.
+     * @param $code
+     * @param $class
+     * @param null $baseControllerName
+     * @param UserManager $userManager
+     */
+    public function __construct($code, $class, $baseControllerName = null, UserManager $userManager)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+        $this->userManager = $userManager;
     }
 
+    /**
+     * @param object $user
+     */
+    public function preUpdate($user): void
+    {
+        $this->userManager->updatePassword($user);
+    }
+
+    /**
+     * @param object $user
+     */
+    public function prePersist($user)
+    {
+        $this->userManager->updatePassword($user);
+    }
+
+    /**
+     * @param object|null $object
+     * @return string|null
+     */
+    public function toString($object)
+    {
+        return $object instanceof Users
+            ? $object->getSummonerName()
+            : 'User : SummonerName';
+    }
+
+
+    /**
+     * @param FormMapper $form
+     */
     protected function configureFormFields(FormMapper $form)
     {
         $form
             ->add('summonerName', TextType::class)
             ->add('email', EmailType::class)
-            ->add('plainPassword', PasswordType::class)
-            ->add('confirmPassword', PasswordType::class)
+            ->add('plainPassword', PasswordType::class, [
+                'required' => false,
+            ])
+            ->add('confirmPassword', PasswordType::class, [
+                'required' => false
+            ])
         ;
     }
 
+    /**
+     * @param ListMapper $list
+     */
     protected function configureListFields(ListMapper $list)
     {
         $list
             ->add('summonerName')
             ->add('email')
+            ->add('roles')
             ->add('createdAt')
             ->add('createdBy')
+            ->add('_action', null, [
+                'actions' => [
+                    'edit' => [],
+                    'delete' => []
+                ]
+            ])
         ;
     }
 
+    /**
+     * @param ShowMapper $show
+     */
     protected function configureShowFields(ShowMapper $show)
     {
         $show

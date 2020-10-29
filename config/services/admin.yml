@@ -9,3 +9,9 @@ services:
     arguments: [ ~, App\Entity\Users, ~]
     tags:
       - { name: sonata.admin, manager_type: orm, label: Users, group: Users }
+
+  Sanction:
+    class: App\Admin\SanctionAdmin
+    arguments: [ ~, App\Entity\Sanction, ~ ]
+    tags:
+      - { name: sonata.admin, manager_type: orm, label: Sanction, group: Sanction }
