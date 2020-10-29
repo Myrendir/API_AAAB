@@ -109,7 +109,7 @@ class Users implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\NotBlank(
      *     message="The field Password is missing.",
-     *     groups={"Register"}
+     *     groups={"Register", "Default"}
      * )
      * @Assert\Length(
      *     min="8",
@@ -387,6 +387,7 @@ class Users implements UserInterface
     public function eraseCredentials()
     {
         $this->plainPassword = null;
+        $this->token = null;
     }
 
     /**

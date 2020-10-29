@@ -3,29 +3,32 @@
  * Created by PhpStorm
  * User: CONTE Alexandre
  * Date: 10/29/20
- * Time: 11:30 AM
+ * Time: 12:29 PM
  */
 
-namespace App\Form;
+namespace App\Form\Password;
 
 use App\Entity\Users;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class ForgotPasswordFormType
- * @package App\Form
+ * Class ResetPasswordFormType
+ * @package App\Form\Password
  *
  * @author CONTE Alexandre <pro.alexandre.conte@gmail.com>
  */
-class ForgotPasswordFormType extends AbstractType
+class ResetPasswordFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class)
+            ->add('password', PasswordType::class, [
+                'property_path' => 'plainPassword'
+            ])
+            ->add('confirmPassword', PasswordType::class)
         ;
     }
 

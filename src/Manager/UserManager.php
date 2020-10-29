@@ -81,6 +81,12 @@ class UserManager
         return $user;
     }
 
+    public function getByToken(string $token)
+    {
+        $user = $this->userRepository->findOneByToken(['token' => $token]);
+        return $user;
+    }
+
     public function updatePassword(Users $users)
     {
         if (0 !== strlen($password = $users->getPlainPassword())) {

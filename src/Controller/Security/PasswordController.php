@@ -8,15 +8,19 @@
 
 namespace App\Controller\Security;
 
-use App\Form\ForgotPasswordFormType;
+use App\Form\Password\ForgotPasswordFormType;
+use App\Form\Password\ResetPasswordFormType;
 use App\Manager\UserManager;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class PasswordController
@@ -29,29 +33,72 @@ use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 class PasswordController extends AbstractController
 {
     /**
-     * @Route("/forgot", name="forgot", methods={"POST"})
+     * @Route("/forgot", name="forgot", methods={"GET", "POST"})
      *
      * @param Request $request
      * @param UserManager $userManager
      * @param TokenGeneratorInterface $tokenGenerator
-     * @param Mailer $mailer
+     * @param MailerInterface $mailer
+     * @param UrlGeneratorInterface $urlGenerator
      *
      * @return JsonResponse
      * @throws \Exception
+     * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      */
-    public function forgotPassword(Request $request, UserManager $userManager, TokenGeneratorInterface $tokenGenerator, Mailer $mailer)
+    public function forgotPassword(Request $request, UserManager $userManager, TokenGeneratorInterface $tokenGenerator, MailerInterface $mailer, UrlGeneratorInterface $urlGenerator)
     {
         $data = json_decode($request->getContent(), true);
+        $token = $tokenGenerator->generateToken();
+        $url = $urlGenerator->generate('password_reset', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
         $user = $userManager->getByEmail($data['email']);
         $form = $this->createForm(ForgotPasswordFormType::class, $user);
         $form->submit($data);
 
         if (isset($user)) {
-            $token = $tokenGenerator->generateToken();
             $user->setToken($token);
             $userManager->save($user);
+            $email = (new TemplatedEmail())
+                ->from('noreply@api-aaab.com')
+                ->to($data['email'])
+                ->subject('Reinitialization Password')
+                ->htmlTemplate('email/forgot_password.html.twig')
+                ->context([
+                    'reset_url' => $url
+                ])
+            ;
+            $mailer->send($email);
+            return new JsonResponse('Email send', Response::HTTP_OK);
         } else {
             return new JsonResponse("User not found", Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    /**
+     * @Route("/reset/{token}", name="reset", methods={"POST"})
+     *
+     * @param UserManager $userManager
+     * @param string $token
+     * @param ValidatorInterface $validator
+     * @param Request $request
+     */
+    public function resetPassword(UserManager $userManager, string $token, Request $request, ValidatorInterface $validator)
+    {
+        $user = $userManager->getByToken($token);
+        $data = json_decode($request->getContent(), true);
+        $form = $this->createForm(ResetPasswordFormType::class, $user);
+        $form->submit($data);
+
+        if (!isset($user)) {
+            return new JsonResponse('User not found', Response::HTTP_BAD_REQUEST);
+        } else {
+            $violation = $validator->validate($user, null, 'Register');
+            if (0 !== count($violation)) {
+                foreach ($violation as $error) {
+                    return new JsonResponse($error->getMessage(), Response::HTTP_BAD_REQUEST);
+                }
+            }
+            $userManager->save($user);
+            return new JsonResponse("Password Update");
         }
     }
 }
