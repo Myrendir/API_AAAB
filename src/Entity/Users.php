@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity(
  *     fields={"summonerName"},
  *     message="This summonerName is already used.",
@@ -50,14 +51,14 @@ class Users implements UserInterface
      * @ORM\Column(name="summoner_name", type="string", length=16, unique=true)
      * @Assert\NotBlank(
      *     message="The field Summoner Name is missing.",
-     *     groups={"Register", "Profile"}
+     *     groups={"Register", "Profile", "Default"}
      * )
      * @Assert\Length(
      *     min="3",
      *     minMessage="The field Summoner Name must do minimum 3 characters",
      *     max="16",
      *     maxMessage="The field Summoner Name not must do superior at 16 characters",
-     *     groups={"Register", "Profile"}
+     *     groups={"Register", "Profile", "Default"}
      * )
      * @Property(type="string", uniqueItems=true)
      * @Serializer\Groups(groups={"User"})
@@ -68,11 +69,11 @@ class Users implements UserInterface
      * @ORM\Column(name="email", type="string", length=150, nullable=true, unique=true)
      * @Assert\NotBlank(
      *     message="The field Email is missing.",
-     *     groups={"Profile", "Register"}
+     *     groups={"Profile", "Register", "Default"}
      * )
      * @Assert\Email(
      *     message="This value is not a valid email address.",
-     *     groups={"Profile", "Register"}
+     *     groups={"Profile", "Register", "Default"}
      * )
      * @Property(type="string", maxLength=150, uniqueItems=true)
      * @Serializer\Groups(groups={"User"})
@@ -89,7 +90,7 @@ class Users implements UserInterface
      * @Assert\EqualTo(
      *     propertyPath="plainPassword",
      *     message="The field Confirmation were not equal to Password.",
-     *     groups={"Register"}
+     *     groups={"Register", "Default"}
      * )
      * @Assert\NotBlank(
      *     message="The field Confirmation is missing.",
@@ -98,7 +99,7 @@ class Users implements UserInterface
      * @Assert\Length(
      *     min="8",
      *     minMessage="The field Confirmation must do minimum 8 characters",
-     *     groups={"Regsiter"}
+     *     groups={"Regsiter", "Default"}
      * )
      * @Property(type="string", nullable=false)
      */
@@ -108,12 +109,12 @@ class Users implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\NotBlank(
      *     message="The field Password is missing.",
-     *     groups={"Register"}
+     *     groups={"Register", "Default"}
      * )
      * @Assert\Length(
      *     min="8",
      *     minMessage="The field Password must do 8 characters minimum",
-     *     groups={"Register"}
+     *     groups={"Register", "Default"}
      * )
      * @Property(type="string", nullable=false)
      */
@@ -134,7 +135,6 @@ class Users implements UserInterface
 
     /**
      * @ORM\Column(name="roles", type="json")
-     * @Assert\NotBlank(message="The field Roles is missing.")
      * @Property(type="array", @Items(type="json"), default="ROLE_USER")
      */
     private $roles = [];
@@ -143,6 +143,11 @@ class Users implements UserInterface
      * @ORM\Column(name="salt", type="string")
      */
     private $salt;
+
+    /**
+     * @ORM\Column(name="token", type="string", nullable=true)
+     */
+    private $token;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Teams", inversedBy="top")
@@ -174,6 +179,15 @@ class Users implements UserInterface
      */
     private $support;
 
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function defaultAttributes()
+    {
+        $this->availability = true;
+        $this->isEnabled = true;
+    }
     /**
      * @return int|null
      */
@@ -343,6 +357,22 @@ class Users implements UserInterface
     }
 
     /**
+     * @return mixed
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param mixed $token
+     */
+    public function setToken(?string $token): void
+    {
+        $this->token = $token;
+    }
+
+    /**
      * @return string
      * @Property(type="string", property="summonerName")
      */
@@ -357,6 +387,7 @@ class Users implements UserInterface
     public function eraseCredentials()
     {
         $this->plainPassword = null;
+        $this->token = null;
     }
 
     /**

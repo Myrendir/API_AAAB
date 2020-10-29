@@ -75,6 +75,18 @@ class UserManager
         return $jsonContent;
     }
 
+    public function getByEmail(string $email)
+    {
+        $user = $this->userRepository->findOneByEmail(['email' => $email]);
+        return $user;
+    }
+
+    public function getByToken(string $token)
+    {
+        $user = $this->userRepository->findOneByToken(['token' => $token]);
+        return $user;
+    }
+
     public function updatePassword(Users $users)
     {
         if (0 !== strlen($password = $users->getPlainPassword())) {
