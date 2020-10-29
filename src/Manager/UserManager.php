@@ -14,8 +14,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use JMS\Serializer\SerializationContext;
-use JMS\Serializer\SerializerBuilder;
-use phpDocumentor\Reflection\Types\Object_;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -51,7 +49,6 @@ class UserManager
         $this->userRepository = $usersRepository;
         $this->passwordEncoder = $passwordEncoder;
         $this->logger = $logger;
-        $this->serializer = SerializerBuilder::create()->build();
     }
 
     public function createUser()
@@ -75,13 +72,11 @@ class UserManager
         try {
             /** @var Users $user */
             $user = $this->userRepository->findOneBy(['summonerName' => $summonerName]);
-            $jsonContent = $this->serializer->serialize($user, 'json', SerializationContext::create()->setGroups(['User']));
-            return $jsonContent;
+            return $user;
         } catch (NonUniqueResultException $exception) {
             $this->logger->error(sprintf('Multiple user returned with the same Summoner Name: %s', $summonerName));
         } catch (NoResultException $exception) {
         }
-
     }
 
     public function getUserByEmail(string $email)
@@ -103,8 +98,8 @@ class UserManager
             $user = $this->userRepository->findOneBy(['token' => $token]);
             return $user;
         } catch (NoResultException $exception) {
+            $this->logger->error(sprintf('Multiple user returned with the same email: %s', $token));
         }
-
     }
 
     public function updatePassword(Users $users)
