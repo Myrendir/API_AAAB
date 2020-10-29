@@ -11,6 +11,8 @@ namespace App\Manager;
 use App\Entity\Users;
 use App\Repository\UsersRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
 use phpDocumentor\Reflection\Types\Object_;
@@ -70,21 +72,39 @@ class UserManager
 
     public function getUserBySummonerName(string $summonerName)
     {
-        $user = $this->userRepository->findOneBySummonerName(['summonerName' => $summonerName]);
-        $jsonContent = $this->serializer->serialize($user, 'json', SerializationContext::create()->setGroups(['User']));
-        return $jsonContent;
+        try {
+            /** @var Users $user */
+            $user = $this->userRepository->findOneBy(['summonerName' => $summonerName]);
+            $jsonContent = $this->serializer->serialize($user, 'json', SerializationContext::create()->setGroups(['User']));
+            return $jsonContent;
+        } catch (NonUniqueResultException $exception) {
+            $this->logger->error(sprintf('Multiple user returned with the same Summoner Name: %s', $summonerName));
+        } catch (NoResultException $exception) {
+        }
+
     }
 
-    public function getByEmail(string $email)
+    public function getUserByEmail(string $email)
     {
-        $user = $this->userRepository->findOneByEmail(['email' => $email]);
-        return $user;
+        try {
+            /** @var Users $user */
+            $user = $this->userRepository->findOneBy(['email' => $email]);
+            return $user;
+        } catch (NonUniqueResultException $exception) {
+            $this->logger->error(sprintf('Multiple user returned with the same email: %s', $email));
+        } catch (NoResultException $exception) {
+        }
     }
 
-    public function getByToken(string $token)
+    public function getUserByToken(string $token)
     {
-        $user = $this->userRepository->findOneByToken(['token' => $token]);
-        return $user;
+        try {
+            /** @var Users $user */
+            $user = $this->userRepository->findOneBy(['token' => $token]);
+            return $user;
+        } catch (NoResultException $exception) {
+        }
+
     }
 
     public function updatePassword(Users $users)

@@ -50,7 +50,7 @@ class PasswordController extends AbstractController
         $data = json_decode($request->getContent(), true);
         $token = $tokenGenerator->generateToken();
         $url = $urlGenerator->generate('password_reset', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
-        $user = $userManager->getByEmail($data['email']);
+        $user = $userManager->getUserByEmail($data['email']);
         $form = $this->createForm(ForgotPasswordFormType::class, $user);
         $form->submit($data);
 
@@ -83,7 +83,7 @@ class PasswordController extends AbstractController
      */
     public function resetPassword(UserManager $userManager, string $token, Request $request, ValidatorInterface $validator)
     {
-        $user = $userManager->getByToken($token);
+        $user = $userManager->getUserByToken($token);
         $data = json_decode($request->getContent(), true);
         $form = $this->createForm(ResetPasswordFormType::class, $user);
         $form->submit($data);
