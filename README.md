@@ -47,5 +47,16 @@ Start Docker with this command:
 * docker-compose up -d
 ```
 
+#### Six Step
+In your file hosts, which is in the folder /etc/hosts for linux and for windows which is C:\Windows\System32\drivers\etc, add the test follow:
+```
+# APi AAAB
+127.0.0.1	admin.api-aaab.com
+127.0.0.1	api-aaab.com
+127.0.0.1   	db.api-aaab.com
+127.0.0.1	mail.api-aaab.com
+# API AAAB
+```
+
 The project is already for the development
 
