@@ -14,6 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use JMS\Serializer\SerializationContext;
+use JMS\Serializer\SerializerBuilder;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -49,6 +50,7 @@ class UserManager
         $this->userRepository = $usersRepository;
         $this->passwordEncoder = $passwordEncoder;
         $this->logger = $logger;
+        $this->serializer = SerializerBuilder::create()->build();
     }
 
     public function createUser()
