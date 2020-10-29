@@ -72,7 +72,7 @@ class UserController extends AbstractController
     /**
      * @Route("/get/{summonerName}", name="get_summonerName", methods={"GET"})
      *
-     * @ParamConverter("users", class="Players")
+     * @ParamConverter("users", class="App\Entity\Users")
      * @param Users $users
      * @param UserManager $userManager
      *
