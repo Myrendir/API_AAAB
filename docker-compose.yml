@@ -53,6 +53,8 @@ services:
         - ./docker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
       networks:
         - nginx-proxy
+      depends_on:
+        - mariadb
 
 networks:
   nginx-proxy:
