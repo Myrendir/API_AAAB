@@ -92,6 +92,11 @@ class Teams
     private $support;
 
     /**
+     * @ORM\ManyToMany(targetEntity=Tournament::class, mappedBy="teams")
+     */
+    private $tournaments;
+
+    /**
      * Teams constructor.
      */
     public function __construct()
@@ -101,6 +106,7 @@ class Teams
         $this->mid = new ArrayCollection();
         $this->adc = new ArrayCollection();
         $this->support = new ArrayCollection();
+        $this->tournaments = new ArrayCollection();
     }
 
     /**
@@ -278,6 +284,33 @@ class Teams
     public function setSupport(ArrayCollection $support): void
     {
         $this->support = $support;
+    }
+
+    /**
+     * @return Collection|Tournament[]
+     */
+    public function getTournaments(): Collection
+    {
+        return $this->tournaments;
+    }
+
+    public function addTournament(Tournament $tournament): self
+    {
+        if (!$this->tournaments->contains($tournament)) {
+            $this->tournaments[] = $tournament;
+            $tournament->addTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTournament(Tournament $tournament): self
+    {
+        if ($this->tournaments->removeElement($tournament)) {
+            $tournament->removeTeam($this);
+        }
+
+        return $this;
     }
 
 
