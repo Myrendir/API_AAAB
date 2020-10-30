@@ -11,6 +11,9 @@ namespace App\Controller;
 use App\Entity\Users;
 use App\Form\ProfileFormType;
 use App\Manager\UserManager;
+use JMS\Serializer\SerializationContext;
+use JMS\Serializer\Serializer;
+use JMS\Serializer\SerializerBuilder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -82,6 +85,8 @@ class UserController extends AbstractController
     public function getOneUserBySummonerName(Users $users, UserManager $userManager)
     {
         $user = $userManager->getUserBySummonerName($users->getSummonerName());
-        return new Response($user);
+        $serialize = SerializerBuilder::create()->build();
+        $jsonContent = $serialize->serialize($user, 'json', SerializationContext::create()->setGroups(['User']));
+        return new Response($jsonContent);
     }
 }
