@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\MatchRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity(repositoryClass=MatchRepository::class)
@@ -11,6 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Match
 {
+    use BlameableEntity;
+    use TimestampableEntity;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -40,9 +45,8 @@ class Match
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Tournament", inversedBy="match")
-     * @ORM\JoinColumn(name="tournament_id", referencedColumnName="id")
      */
-    private $tournament;
+    private $tournament = [];
 
     /**
      * @return int|null
@@ -117,19 +121,18 @@ class Match
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getTournament()
+    public function getTournament(): array
     {
         return $this->tournament;
     }
 
     /**
-     * @param mixed $tournament
+     * @param array $tournament
      */
-    public function setTournament($tournament): void
+    public function setTournament(array $tournament): void
     {
         $this->tournament = $tournament;
     }
-
 }

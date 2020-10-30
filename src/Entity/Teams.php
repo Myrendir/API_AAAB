@@ -8,8 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use OpenApi\Annotations\Items;
-use OpenApi\Annotations\Property;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -294,6 +292,10 @@ class Teams
         return $this->tournaments;
     }
 
+    /**
+     * @param Tournament $tournament
+     * @return $this
+     */
     public function addTournament(Tournament $tournament): self
     {
         if (!$this->tournaments->contains($tournament)) {
@@ -304,6 +306,10 @@ class Teams
         return $this;
     }
 
+    /**
+     * @param Tournament $tournament
+     * @return $this
+     */
     public function removeTournament(Tournament $tournament): self
     {
         if ($this->tournaments->removeElement($tournament)) {
