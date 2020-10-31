@@ -35,16 +35,6 @@ class Type
     private $title;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Teams", mappedBy="type")
-     */
-    private $teams;
-
-    public function __construct()
-    {
-        $this->teams = new ArrayCollection();
-    }
-
-    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -69,22 +59,6 @@ class Type
         $this->title = $title;
 
         return $this;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getTeams(): ArrayCollection
-    {
-        return $this->teams;
-    }
-
-    /**
-     * @param ArrayCollection $teams
-     */
-    public function setTeams(ArrayCollection $teams): void
-    {
-        $this->teams = $teams;
     }
 
 }

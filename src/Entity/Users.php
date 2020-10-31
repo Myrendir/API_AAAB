@@ -151,30 +151,35 @@ class Users implements UserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Teams", inversedBy="top")
+     * @ORM\JoinColumn(name="teams_id", referencedColumnName="id")
      * @Serializer\Groups(groups={"Users"})
      */
     private $top;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Teams", inversedBy="jungle")
+     * @ORM\JoinColumn(name="teams_id", referencedColumnName="id")
      * @Serializer\Groups(groups={"Users"})
      */
     private $jungle;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Teams", inversedBy="adc")
+     * @ORM\JoinColumn(name="teams_id", referencedColumnName="id")
      * @Serializer\Groups(groups={"Users"})
      */
     private $adc;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Teams", inversedBy="mid")
+     * @ORM\JoinColumn(name="teams_id", referencedColumnName="id")
      * @Serializer\Groups(groups={"Users"})
      */
     private $mid;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Teams", inversedBy="support")
+     * @ORM\JoinColumn(name="teams_id", referencedColumnName="id")
      * @Serializer\Groups(groups={"Users"})
      */
     private $support;

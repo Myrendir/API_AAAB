@@ -15,3 +15,21 @@ services:
     arguments: [ ~, App\Entity\Sanction, ~ ]
     tags:
       - { name: sonata.admin, manager_type: orm, label: Sanction, group: Sanction }
+
+  Tournament:
+    class: App\Admin\TournamentAdmin
+    arguments: [ ~, App\Entity\Tournament, ~]
+    tags:
+      - { name: sonata.admin, manager_type: orm, label: Tournament, group: Tournament }
+
+  Teams:
+    class: App\Admin\TeamsAdmin
+    arguments: [ ~, App\Entity\Teams, ~]
+    tags:
+      - { name: sonata.admin, manager_type: orm, label: Teams, group: Teams }
+
+  Type:
+    class: App\Admin\TypeAdmin
+    arguments: [ ~, App\Entity\Type, ~]
+    tags:
+      - { name: sonata.admin, manager_type: orm, label: Type, group: Type }

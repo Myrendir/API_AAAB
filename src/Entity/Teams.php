@@ -45,9 +45,10 @@ class Teams
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Type", inversedBy="teams")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Type")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id", nullable=true)
      */
-    private $type = [];
+    private $type;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -135,20 +136,21 @@ class Teams
     }
 
     /**
-     * @return array
+     * @return mixed
      */
-    public function getType(): array
+    public function getType()
     {
         return $this->type;
     }
 
     /**
-     * @param array $type
+     * @param mixed $type
      */
-    public function setType(array $type): void
+    public function setType($type): void
     {
         $this->type = $type;
     }
+
 
     /**
      * @return int|null
