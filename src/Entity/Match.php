@@ -6,6 +6,8 @@ use App\Repository\MatchRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use OpenApi\Annotations\Items;
+use OpenApi\Annotations\Property;
 
 /**
  * @ORM\Entity(repositoryClass=MatchRepository::class)
@@ -35,6 +37,7 @@ class Match
 
     /**
      * @ORM\Column(type="json")
+     * @Property(type="json")
      */
     private $data;
 

@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use OpenApi\Annotations\Items;
+use OpenApi\Annotations\Property;
 
 /**
  * @ORM\Entity(repositoryClass=TournamentRepository::class)
@@ -36,11 +38,13 @@ class Tournament
 
     /**
      * @ORM\Column(type="array")
+     * @Property(type="array", @Items(type="string"))
      */
     private $format = [];
 
     /**
      * @ORM\Column(type="array")
+     * @Property(type="array", @Items(type="string"))
      */
     private $map = [];
 

@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use OpenApi\Annotations\Property;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -92,6 +93,7 @@ class Teams
 
     /**
      * @ORM\ManyToMany(targetEntity=Tournament::class, mappedBy="teams")
+     * @Property(type="anyOf", schema="Tournament")
      */
     private $tournaments;
 
