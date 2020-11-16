@@ -8,6 +8,11 @@
 
 namespace App\Controller\Security;
 
+use OpenApi\Annotations\Items;
+use OpenApi\Annotations\JsonContent;
+use OpenApi\Annotations\Parameter;
+use OpenApi\Annotations\Response;
+use OpenApi\Annotations\Schema;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,6 +34,27 @@ class AuthController extends AbstractController
      * @param AuthenticationUtils $authenticationUtils
      *
      * @return JsonResponse
+     *
+     * @Response(
+     *     response=200,
+     *     description="Return a token",
+     *     @Items(
+     *          type="json",
+     *          example="string"
+     *     )
+     * )
+     * @Parameter(
+     *     name="username",
+     *     in="query",
+     *     description="this field is a username f user",
+     *     @Schema(type="string")
+     * )
+     * @Parameter(
+     *     name="password",
+     *     in="query",
+     *     description="This field correpond at the password of user",
+     *     @Schema(type="string")
+     * )
      */
     public function login(AuthenticationUtils $authenticationUtils)
     {
@@ -42,6 +68,23 @@ class AuthController extends AbstractController
      * @Route("/login_check", name="login_check", methods={"POST"})
      *
      * @return JsonResponse
+     *
+     * @Response(
+     *     response=200,
+     *     description="Return a token"
+     * )
+     * @Parameter(
+     *     name="username",
+     *     in="query",
+     *     description="this field is a username f user",
+     *     @Schema(type="string")
+     * )
+     * @Parameter(
+     *     name="password",
+     *     in="query",
+     *     description="This field correpond at the password of user",
+     *     @Schema(type="string")
+     * )
      */
     public function loginCheck()
     {
