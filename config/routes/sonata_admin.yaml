@@ -8,3 +8,8 @@ _sonata_admin:
     type: sonata_admin
     prefix: /
     host: 'admin.%base_host%'
+
+admin_security:
+    resource: '../../src/Controller/Admin'
+    host: 'admin.%base_host%'
+    type: annotation

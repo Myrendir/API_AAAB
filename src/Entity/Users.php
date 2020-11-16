@@ -383,7 +383,7 @@ class Users implements UserInterface
      */
     public function getUsername()
     {
-        return $this->summonerName;
+        return $this->email;
     }
 
     /**
@@ -478,6 +478,14 @@ class Users implements UserInterface
     public function setSupport(?Teams $support): self
     {
         $this->support = $support;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return true === $this->isEnabled;
     }
 
 }
