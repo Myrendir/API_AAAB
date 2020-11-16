@@ -12,8 +12,9 @@ use App\Entity\Users;
 use App\Form\ProfileFormType;
 use App\Manager\UserManager;
 use JMS\Serializer\SerializationContext;
-use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerBuilder;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -40,6 +41,8 @@ class UserController extends AbstractController
      * @param ValidatorInterface $validator
      *
      * @return JsonResponse
+     *
+     * @Security(name="Bearer")
      */
     public function editProfile(UserManager $userManager, Request $request, ValidatorInterface $validator)
     {
@@ -65,6 +68,13 @@ class UserController extends AbstractController
      * @param UserManager $userManager
      *
      * @return Response
+     *
+     * @Security(name="Bearer")
+     * @\OpenApi\Annotations\Response(
+     *     response=200,
+     *     description="List of all users",*
+     *     @Model(type=Users::class)
+     * )
      */
     public function getAllUsers(UserManager $userManager)
     {
@@ -81,6 +91,13 @@ class UserController extends AbstractController
      *
      * @return Response
      * @throws \Exception
+     *
+     * @Security(name="Bearer")
+     * @\OpenApi\Annotations\Response(
+     *     response=200,
+     *     description="List of all users",
+     *     @Model(type=Users::class)
+     * )
      */
     public function getOneUserBySummonerName(Users $users, UserManager $userManager)
     {
