@@ -383,7 +383,7 @@ class Users implements UserInterface
      */
     public function getUsername()
     {
-        return $this->email;
+        return $this->summonerName;
     }
 
     /**
