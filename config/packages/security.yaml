@@ -6,7 +6,7 @@ security:
     users:
       entity:
         class: App\Entity\Users
-        property: email
+        property: summonerName
 
   firewalls:
     dev:
@@ -41,4 +41,6 @@ security:
     - { path: ^/api/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+
+    - { path: ^/admin/, role: [ ROLE_ADMIN, ROLE_SONATA_ADMIN ] }
 
