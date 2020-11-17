@@ -3,10 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TypeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Blameable\Traits\BlameableEntity;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -14,9 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Type
 {
-    use BlameableEntity;
-    use TimestampableEntity;
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -34,31 +28,20 @@ class Type
      */
     private $title;
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string|null
-     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @param string|null $title
-     * @return $this
-     */
-    public function setTitle(?string $title): self
+    public function setTitle(string $title): self
     {
         $this->title = $title;
 
         return $this;
     }
-
 }

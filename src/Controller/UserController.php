@@ -43,6 +43,7 @@ class UserController extends AbstractController
      * @return JsonResponse
      *
      * @Security(name="Bearer")
+     * @throws \Exception
      */
     public function editProfile(UserManager $userManager, Request $request, ValidatorInterface $validator)
     {

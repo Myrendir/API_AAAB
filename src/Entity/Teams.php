@@ -6,26 +6,12 @@ use App\Repository\TeamsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Blameable\Traits\BlameableEntity;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
-use OpenApi\Annotations\Property;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TeamsRepository::class)
- * @UniqueEntity(
- *     fields={"name"},
- *     message="The name is already to use"
- * )
- *
- * @author CONTE Alexandre <pro.alexandre.conte@gmail.com>
  */
 class Teams
 {
-    use BlameableEntity;
-    use TimestampableEntity;
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -35,21 +21,8 @@ class Teams
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="The field name is missing")
-     * @Assert\Length(
-     *     min="3",
-     *     minMessage="The field Name must do minimum 3 characters",
-     *     max="25",
-     *     maxMessage="The field Name must not do maximum 25 characters"
-     * )
      */
     private $name;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Type")
-     * @ORM\JoinColumn(name="type_id", referencedColumnName="id", nullable=true)
-     */
-    private $type;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -62,44 +35,35 @@ class Teams
     private $status;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Users", mappedBy="top")
-     * @Assert\NotBlank(message="The field Top is missing.")
+     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="top")
      */
     private $top;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Users", mappedBy="jungle")
-     * @Assert\NotBlank(message="The field Jungle is missing.")
+     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="jungle")
      */
     private $jungle;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Users", mappedBy="mid")
-     * @Assert\NotBlank(message="The field Mid is missing.")
+     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="mid")
      */
     private $mid;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Users", mappedBy="adc")
-     * @Assert\NotBlank(message="The field Adc is missing.")
+     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="adc")
      */
     private $adc;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Users", mappedBy="support")
-     * @Assert\NotBlank(message="The field Support is missing.")
+     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="support")
      */
     private $support;
 
     /**
      * @ORM\ManyToMany(targetEntity=Tournament::class, mappedBy="teams")
-     * @Property(type="anyOf", schema="Tournament")
      */
     private $tournaments;
 
-    /**
-     * Teams constructor.
-     */
     public function __construct()
     {
         $this->top = new ArrayCollection();
@@ -110,62 +74,28 @@ class Teams
         $this->tournaments = new ArrayCollection();
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string|null
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string|null $name
-     * @return $this
-     */
-    public function setName(?string $name): self
+    public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param mixed $type
-     */
-    public function setType($type): void
-    {
-        $this->type = $type;
-    }
-
-
-    /**
-     * @return int|null
-     */
     public function getScore(): ?int
     {
         return $this->score;
     }
 
-    /**
-     * @param int|null $score
-     * @return $this
-     */
     public function setScore(?int $score): self
     {
         $this->score = $score;
@@ -173,18 +103,11 @@ class Teams
         return $this;
     }
 
-    /**
-     * @return bool|null
-     */
     public function getStatus(): ?bool
     {
         return $this->status;
     }
 
-    /**
-     * @param bool $status
-     * @return $this
-     */
     public function setStatus(bool $status): self
     {
         $this->status = $status;
@@ -193,99 +116,153 @@ class Teams
     }
 
     /**
-     * @return string
+     * @return Collection|Users[]
      */
-    public function getCreatedBy(): string
-    {
-        return $this->createdBy;
-    }
-
-    /**
-     * @param string $createdBy
-     */
-    public function setCreatedBy(string $createdBy): void
-    {
-        $this->createdBy = $createdBy;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getTop(): ArrayCollection
+    public function getTop(): Collection
     {
         return $this->top;
     }
 
-    /**
-     * @param ArrayCollection $top
-     */
-    public function setTop(ArrayCollection $top): void
+    public function addTop(Users $top): self
     {
-        $this->top = $top;
+        if (!$this->top->contains($top)) {
+            $this->top[] = $top;
+            $top->setTop($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTop(Users $top): self
+    {
+        if ($this->top->removeElement($top)) {
+            // set the owning side to null (unless already changed)
+            if ($top->getTop() === $this) {
+                $top->setTop(null);
+            }
+        }
+
+        return $this;
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection|Users[]
      */
-    public function getJungle(): ArrayCollection
+    public function getJungle(): Collection
     {
         return $this->jungle;
     }
 
-    /**
-     * @param ArrayCollection $jungle
-     */
-    public function setJungle(ArrayCollection $jungle): void
+    public function addJungle(Users $jungle): self
     {
-        $this->jungle = $jungle;
+        if (!$this->jungle->contains($jungle)) {
+            $this->jungle[] = $jungle;
+            $jungle->setJungle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJungle(Users $jungle): self
+    {
+        if ($this->jungle->removeElement($jungle)) {
+            // set the owning side to null (unless already changed)
+            if ($jungle->getJungle() === $this) {
+                $jungle->setJungle(null);
+            }
+        }
+
+        return $this;
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection|Users[]
      */
-    public function getMid(): ArrayCollection
+    public function getMid(): Collection
     {
         return $this->mid;
     }
 
-    /**
-     * @param ArrayCollection $mid
-     */
-    public function setMid(ArrayCollection $mid): void
+    public function addMid(Users $mid): self
     {
-        $this->mid = $mid;
+        if (!$this->mid->contains($mid)) {
+            $this->mid[] = $mid;
+            $mid->setMid($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMid(Users $mid): self
+    {
+        if ($this->mid->removeElement($mid)) {
+            // set the owning side to null (unless already changed)
+            if ($mid->getMid() === $this) {
+                $mid->setMid(null);
+            }
+        }
+
+        return $this;
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection|Users[]
      */
-    public function getAdc(): ArrayCollection
+    public function getAdc(): Collection
     {
         return $this->adc;
     }
 
-    /**
-     * @param ArrayCollection $adc
-     */
-    public function setAdc(ArrayCollection $adc): void
+    public function addAdc(Users $adc): self
     {
-        $this->adc = $adc;
+        if (!$this->adc->contains($adc)) {
+            $this->adc[] = $adc;
+            $adc->setAdc($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdc(Users $adc): self
+    {
+        if ($this->adc->removeElement($adc)) {
+            // set the owning side to null (unless already changed)
+            if ($adc->getAdc() === $this) {
+                $adc->setAdc(null);
+            }
+        }
+
+        return $this;
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection|Users[]
      */
-    public function getSupport(): ArrayCollection
+    public function getSupport(): Collection
     {
         return $this->support;
     }
 
-    /**
-     * @param ArrayCollection $support
-     */
-    public function setSupport(ArrayCollection $support): void
+    public function addSupport(Users $support): self
     {
-        $this->support = $support;
+        if (!$this->support->contains($support)) {
+            $this->support[] = $support;
+            $support->setSupport($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSupport(Users $support): self
+    {
+        if ($this->support->removeElement($support)) {
+            // set the owning side to null (unless already changed)
+            if ($support->getSupport() === $this) {
+                $support->setSupport(null);
+            }
+        }
+
+        return $this;
     }
 
     /**
@@ -296,10 +273,6 @@ class Teams
         return $this->tournaments;
     }
 
-    /**
-     * @param Tournament $tournament
-     * @return $this
-     */
     public function addTournament(Tournament $tournament): self
     {
         if (!$this->tournaments->contains($tournament)) {
@@ -310,10 +283,6 @@ class Teams
         return $this;
     }
 
-    /**
-     * @param Tournament $tournament
-     * @return $this
-     */
     public function removeTournament(Tournament $tournament): self
     {
         if ($this->tournaments->removeElement($tournament)) {
@@ -322,6 +291,4 @@ class Teams
 
         return $this;
     }
-
-
 }

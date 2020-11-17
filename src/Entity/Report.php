@@ -4,8 +4,6 @@ namespace App\Entity;
 
 use App\Repository\ReportRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Blameable\Traits\BlameableEntity;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -13,9 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Report
 {
-    use BlameableEntity;
-    use TimestampableEntity;
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -39,26 +34,16 @@ class Report
      */
     private $comment;
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return \DateTimeInterface|null
-     */
     public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
     }
 
-    /**
-     * @param \DateTimeInterface $date
-     * @return $this
-     */
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
@@ -66,19 +51,12 @@ class Report
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getComment(): ?string
     {
         return $this->comment;
     }
 
-    /**
-     * @param string|null $comment
-     * @return $this
-     */
-    public function setComment(?string $comment): self
+    public function setComment(string $comment): self
     {
         $this->comment = $comment;
 

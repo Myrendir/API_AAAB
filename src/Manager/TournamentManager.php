@@ -11,6 +11,7 @@ namespace App\Manager;
 use App\Entity\Tournament;
 use App\Repository\TournamentRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerBuilder;
 use Psr\Log\LoggerInterface;
 
@@ -22,6 +23,7 @@ use Psr\Log\LoggerInterface;
  */
 class TournamentManager
 {
+
     /**
      * @var EntityManagerInterface
      */
@@ -38,9 +40,10 @@ class TournamentManager
     protected $logger;
 
     /**
-     * @var \JMS\Serializer\Serializer
+     * @var Serializer
      */
     protected $serializer;
+
 
     /**
      * TournamentManager constructor.

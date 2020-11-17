@@ -4,17 +4,12 @@ namespace App\Entity;
 
 use App\Repository\SanctionRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Blameable\Traits\BlameableEntity;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity(repositoryClass=SanctionRepository::class)
  */
 class Sanction
 {
-    use BlameableEntity;
-    use TimestampableEntity;
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -23,12 +18,12 @@ class Sanction
     private $id;
 
     /**
-     * @ORM\Column(name="start_sanction", type="datetime")
+     * @ORM\Column(type="datetime")
      */
     private $startSanction;
 
     /**
-     * @ORM\Column(name="end_sanction", type="datetime")
+     * @ORM\Column(type="datetime")
      */
     private $endSanction;
 
@@ -37,59 +32,41 @@ class Sanction
      */
     private $motif;
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getStartSanction()
+    public function getStartSanction(): ?\DateTimeInterface
     {
         return $this->startSanction;
     }
 
-    /**
-     * @param mixed $startSanction
-     */
-    public function setStartSanction($startSanction): void
+    public function setStartSanction(\DateTimeInterface $startSanction): self
     {
         $this->startSanction = $startSanction;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getEndSanction()
+    public function getEndSanction(): ?\DateTimeInterface
     {
         return $this->endSanction;
     }
 
-    /**
-     * @param mixed $endSanction
-     */
-    public function setEndSanction($endSanction): void
+    public function setEndSanction(\DateTimeInterface $endSanction): self
     {
         $this->endSanction = $endSanction;
+
+        return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getMotif(): ?string
     {
         return $this->motif;
     }
 
-    /**
-     * @param string|null $motif
-     * @return $this
-     */
-    public function setMotif(?string $motif): self
+    public function setMotif(string $motif): self
     {
         $this->motif = $motif;
 

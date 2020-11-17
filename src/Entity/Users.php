@@ -1,20 +1,12 @@
 <?php
-/**
- * Created by PhpStorm
- * User: CONTE Alexandre
- * Date: 9/24/20
- * Time: 4:50 PM
- */
 
 namespace App\Entity;
 
 use App\Repository\UsersRepository;
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Blameable\Traits\BlameableEntity;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use JMS\Serializer\Annotation as Serializer;
 use OpenApi\Annotations\Items;
 use OpenApi\Annotations\Property;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -24,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity(
  *     fields={"summonerName"},
- *     message="This summonerName is already used.",
+ *     message="This summonerName is already used !",
  *     groups={"Register", "Profile"}
  * )
  * @UniqueEntity(
@@ -37,18 +29,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Users implements UserInterface
 {
-    use BlameableEntity;
-    use TimestampableEntity;
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(name="summoner_name", type="string", length=16, unique=true)
+     * @ORM\Column(type="string", length=16)
      * @Assert\NotBlank(
      *     message="The field Summoner Name is missing.",
      *     groups={"Register", "Profile", "Default"}
@@ -66,7 +55,7 @@ class Users implements UserInterface
     private $summonerName;
 
     /**
-     * @ORM\Column(name="email", type="string", length=150, nullable=true, unique=true)
+     * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(
      *     message="The field Email is missing.",
      *     groups={"Profile", "Register", "Default"}
@@ -81,7 +70,7 @@ class Users implements UserInterface
     private $email;
 
     /**
-     * @ORM\Column(name="password", type="string", length=255)
+     * @ORM\Column(type="string", length=255)
      * @Property(type="string", property="plainPassword")
      */
     private $password;
@@ -121,66 +110,56 @@ class Users implements UserInterface
     private $plainPassword;
 
     /**
-     * @ORM\Column(name="availability", type="boolean")
+     * @ORM\Column(type="boolean")
      * @Property(type="boolean", default="true")
      * @Serializer\Groups(groups={"User"})
      */
     private $availability;
 
     /**
-     * @ORM\Column(name="is_enabled", type="boolean")
+     * @ORM\Column(type="boolean")
      * @Property(type="boolean", default="true")
      */
     private $isEnabled;
 
     /**
-     * @ORM\Column(name="roles", type="json")
+     * @ORM\Column(type="json")
      * @Property(type="array", @Items(type="json"), default="ROLE_USER")
      */
     private $roles = [];
 
     /**
-     * @ORM\Column(name="salt", type="string")
+     * @ORM\Column(type="string", length=255)
      */
     private $salt;
 
     /**
-     * @ORM\Column(name="token", type="string", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $token;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Teams", inversedBy="top")
-     * @ORM\JoinColumn(name="teams_id", referencedColumnName="id")
-     * @Serializer\Groups(groups={"Users"})
+     * @ORM\ManyToOne(targetEntity=Teams::class, inversedBy="top")
      */
     private $top;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Teams", inversedBy="jungle")
-     * @ORM\JoinColumn(name="teams_id", referencedColumnName="id")
-     * @Serializer\Groups(groups={"Users"})
+     * @ORM\ManyToOne(targetEntity=Teams::class, inversedBy="jungle")
      */
     private $jungle;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Teams", inversedBy="adc")
-     * @ORM\JoinColumn(name="teams_id", referencedColumnName="id")
-     * @Serializer\Groups(groups={"Users"})
-     */
-    private $adc;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Teams", inversedBy="mid")
-     * @ORM\JoinColumn(name="teams_id", referencedColumnName="id")
-     * @Serializer\Groups(groups={"Users"})
+     * @ORM\ManyToOne(targetEntity=Teams::class, inversedBy="mid")
      */
     private $mid;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Teams", inversedBy="support")
-     * @ORM\JoinColumn(name="teams_id", referencedColumnName="id")
-     * @Serializer\Groups(groups={"Users"})
+     * @ORM\ManyToOne(targetEntity=Teams::class, inversedBy="adc")
+     */
+    private $adc;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Teams::class, inversedBy="support")
      */
     private $support;
 
@@ -193,91 +172,53 @@ class Users implements UserInterface
         $this->availability = true;
         $this->isEnabled = true;
     }
-    /**
-     * @return int|null
-     */
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string|null
-     */
     public function getSummonerName(): ?string
     {
         return $this->summonerName;
     }
 
-    /**
-     * @param string|null $summonerName
-     * @return $this
-     */
-    public function setSummonerName(?string $summonerName): self
+    public function setSummonerName(string $summonerName): self
     {
         $this->summonerName = $summonerName;
 
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    /**
-     * @param string|null $email
-     * @return $this
-     */
-    public function setEmail(?string $email): self
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    /**
-     * @param string|null $password
-     * @return $this
-     */
-    public function setPassword(?string $password): self
+    public function setPassword(string $password): self
     {
         $this->password = $password;
 
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getConfirmPassword()
-    {
-        return $this->confirmPassword;
-    }
-
-    /**
-     * @return string|null
-     */
     public function getPlainPassword(): ?string
     {
         return $this->plainPassword;
     }
 
-    /**
-     * @param string|null $plainPassword
-     * @return $this
-     */
     public function setPlainPassword(?string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
@@ -285,18 +226,11 @@ class Users implements UserInterface
         return $this;
     }
 
-    /**
-     * @return bool|null
-     */
     public function getAvailability(): ?bool
     {
         return $this->availability;
     }
 
-    /**
-     * @param bool $availability
-     * @return $this
-     */
     public function setAvailability(bool $availability): self
     {
         $this->availability = $availability;
@@ -304,18 +238,11 @@ class Users implements UserInterface
         return $this;
     }
 
-    /**
-     * @return bool|null
-     */
     public function getIsEnabled(): ?bool
     {
         return $this->isEnabled;
     }
 
-    /**
-     * @param bool $isEnabled
-     * @return $this
-     */
     public function setIsEnabled(bool $isEnabled): self
     {
         $this->isEnabled = $isEnabled;
@@ -353,28 +280,83 @@ class Users implements UserInterface
         // TODO: Implement getSalt() method.
     }
 
-    /**
-     * @param string|null $salt
-     */
-    public function setSalt(?string $salt)
+    public function setSalt(string $salt): self
     {
         $this->salt = $salt;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getToken()
+    public function getToken(): ?string
     {
         return $this->token;
     }
 
-    /**
-     * @param mixed $token
-     */
-    public function setToken(?string $token): void
+    public function setToken(?string $token): self
     {
         $this->token = $token;
+
+        return $this;
+    }
+
+    public function getTop(): ?Teams
+    {
+        return $this->top;
+    }
+
+    public function setTop(?Teams $top): self
+    {
+        $this->top = $top;
+
+        return $this;
+    }
+
+    public function getJungle(): ?Teams
+    {
+        return $this->jungle;
+    }
+
+    public function setJungle(?Teams $jungle): self
+    {
+        $this->jungle = $jungle;
+
+        return $this;
+    }
+
+    public function getMid(): ?Teams
+    {
+        return $this->mid;
+    }
+
+    public function setMid(?Teams $mid): self
+    {
+        $this->mid = $mid;
+
+        return $this;
+    }
+
+    public function getAdc(): ?Teams
+    {
+        return $this->adc;
+    }
+
+    public function setAdc(?Teams $adc): self
+    {
+        $this->adc = $adc;
+
+        return $this;
+    }
+
+    public function getSupport(): ?Teams
+    {
+        return $this->support;
+    }
+
+    public function setSupport(?Teams $support): self
+    {
+        $this->support = $support;
+
+        return $this;
     }
 
     /**
@@ -396,96 +378,10 @@ class Users implements UserInterface
     }
 
     /**
-     * @return mixed
-     */
-    public function getTop(): ?Teams
-    {
-        return $this->top;
-    }
-
-    /**
-     * @param Teams|null $top
-     * @return $this
-     */
-    public function setTop(?Teams $top): self
-    {
-        $this->top = $top;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getJungle(): ?Teams
-    {
-        return $this->jungle;
-    }
-
-    /**
-     * @param Teams|null $jungle
-     * @return $this
-     */
-    public function setJungle(?Teams $jungle): self
-    {
-        $this->jungle = $jungle;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAdc(): ?Teams
-    {
-        return $this->adc;
-    }
-
-    /**
-     * @param Teams|null $adc
-     * @return $this
-     */
-    public function setAdc(?Teams $adc): self
-    {
-        $this->adc = $adc;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMid(): ?Teams
-    {
-        return $this->mid;
-    }
-
-    /**
-     * @param Teams|null $mid
-     * @return $this
-     */
-    public function setMid(?Teams $mid): self
-    {
-        $this->mid = $mid;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSupport(): ?Teams
-    {
-        return $this->support;
-    }
-
-    /**
-     * @param Teams|null $support
-     * @return $this
-     */
-    public function setSupport(?Teams $support): self
-    {
-        $this->support = $support;
-    }
-
-    /**
      * @return bool
      */
     public function isEnabled()
     {
         return true === $this->isEnabled;
     }
-
 }

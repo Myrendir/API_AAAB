@@ -9,14 +9,14 @@ actor: FunctionalTester
 modules:
     enabled:
         - Symfony:
-            app_path: 'src'
-            environment: 'test'
+              app_path: 'src'
+              environment: 'test'
         - Doctrine2:
-            depends: Symfony
-            cleanup: true
+              depends: Symfony
+              cleanup: true
         - REST:
-            depends: Symfony
-            url: 'http://localhost:8000' # you only need the &url anchor for further PhpBrowser configs
-            shortDebugResponse: 300 # only the first 300 chars of the response
-            part: Json
+              depends: Symfony
+              url: 'http://localhost:8000' # you only need the &url anchor for further PhpBrowser configs
+              shortDebugResponse: 300 # only the first 300 chars of the response
+              part: Json
         - \App\Tests\Helper\Functional

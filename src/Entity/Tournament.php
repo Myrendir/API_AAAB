@@ -6,19 +6,12 @@ use App\Repository\TournamentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Blameable\Traits\BlameableEntity;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
-use OpenApi\Annotations\Items;
-use OpenApi\Annotations\Property;
 
 /**
  * @ORM\Entity(repositoryClass=TournamentRepository::class)
  */
 class Tournament
 {
-    use BlameableEntity;
-    use TimestampableEntity;
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -38,13 +31,11 @@ class Tournament
 
     /**
      * @ORM\Column(type="array")
-     * @Property(type="array", @Items(type="string"))
      */
     private $format = [];
 
     /**
      * @ORM\Column(type="array")
-     * @Property(type="array", @Items(type="string"))
      */
     private $map = [];
 
@@ -54,38 +45,26 @@ class Tournament
     private $teams;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Match", mappedBy="tournament")
+     * @ORM\OneToMany(targetEntity=Matchs::class, mappedBy="tournament")
      */
-    private $match;
+    private $matchs;
 
-    /**
-     * Tournament constructor.
-     */
     public function __construct()
     {
-        $this->match = new ArrayCollection();
+        $this->teams = new ArrayCollection();
+        $this->matchs = new ArrayCollection();
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string|null
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     * @return $this
-     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -93,18 +72,11 @@ class Tournament
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getSlots(): ?int
     {
         return $this->slots;
     }
 
-    /**
-     * @param int $slots
-     * @return $this
-     */
     public function setSlots(int $slots): self
     {
         $this->slots = $slots;
@@ -112,18 +84,11 @@ class Tournament
         return $this;
     }
 
-    /**
-     * @return array|null
-     */
     public function getFormat(): ?array
     {
         return $this->format;
     }
 
-    /**
-     * @param array $format
-     * @return $this
-     */
     public function setFormat(array $format): self
     {
         $this->format = $format;
@@ -131,18 +96,11 @@ class Tournament
         return $this;
     }
 
-    /**
-     * @return array|null
-     */
     public function getMap(): ?array
     {
         return $this->map;
     }
 
-    /**
-     * @param array $map
-     * @return $this
-     */
     public function setMap(array $map): self
     {
         $this->map = $map;
@@ -151,55 +109,56 @@ class Tournament
     }
 
     /**
-     * @return Teams
+     * @return Collection|Teams[]
      */
-    public function getTeams(): ?Teams
+    public function getTeams(): Collection
     {
         return $this->teams;
     }
 
-    /**
-     * @param Teams|null $teams
-     *
-     * @return $this
-     */
-    public function setTeems(?Teams $teams): self
+    public function addTeam(Teams $team): self
     {
-        $this->teams = $teams;
-
-        return $this;
-    }
-    /**
-     * @return Collection|Match[]
-     */
-    public function getMatch(): Collection
-    {
-        return $this->match;
-    }
-
-    /**
-     * @param Match $match
-     * @return $this
-     */
-    public function addMatch(Match $match): self
-    {
-        if (!$this->match->contains($match)) {
-            $this->match[] = $match;
+        if (!$this->teams->contains($team)) {
+            $this->teams[] = $team;
         }
 
         return $this;
     }
 
-    /**
-     * @param Match $match
-     * @return $this
-     */
-    public function removeMatch(Match $match): self
+    public function removeTeam(Teams $team): self
     {
-        $this->match->removeElement($match);
+        $this->teams->removeElement($team);
 
         return $this;
     }
 
+    /**
+     * @return Collection|Matchs[]
+     */
+    public function getMatchs(): Collection
+    {
+        return $this->matchs;
+    }
 
+    public function addMatch(Matchs $match): self
+    {
+        if (!$this->matchs->contains($match)) {
+            $this->matchs[] = $match;
+            $match->setTournament($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMatch(Matchs $match): self
+    {
+        if ($this->matchs->removeElement($match)) {
+            // set the owning side to null (unless already changed)
+            if ($match->getTournament() === $this) {
+                $match->setTournament(null);
+            }
+        }
+
+        return $this;
+    }
 }

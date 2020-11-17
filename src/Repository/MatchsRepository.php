@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Match;
+use App\Entity\Matchs;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Match|null find($id, $lockMode = null, $lockVersion = null)
- * @method Match|null findOneBy(array $criteria, array $orderBy = null)
- * @method Match[]    findAll()
- * @method Match[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Matchs|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Matchs|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Matchs[]    findAll()
+ * @method Matchs[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MatchRepository extends ServiceEntityRepository
+class MatchsRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Match::class);
+        parent::__construct($registry, Matchs::class);
     }
 
     // /**
-    //  * @return Match[] Returns an array of Match objects
+    //  * @return Matchs[] Returns an array of Matchs objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class MatchRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Match
+    public function findOneBySomeField($value): ?Matchs
     {
         return $this->createQueryBuilder('m')
             ->andWhere('m.exampleField = :val')

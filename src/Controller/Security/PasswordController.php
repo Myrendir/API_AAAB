@@ -80,6 +80,9 @@ class PasswordController extends AbstractController
      * @param string $token
      * @param ValidatorInterface $validator
      * @param Request $request
+     *
+     * @return JsonResponse
+     * @throws \Exception
      */
     public function resetPassword(UserManager $userManager, string $token, Request $request, ValidatorInterface $validator)
     {

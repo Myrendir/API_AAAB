@@ -36,6 +36,7 @@ class RegisterController extends AbstractController
      *
      * @return JsonResponse
      *
+     * @throws \Exception
      */
     public function registerUser(UserManager $userManager, Request $request, ValidatorInterface $validator)
     {
