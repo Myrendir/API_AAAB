@@ -63,7 +63,6 @@ class Tournament
      */
     public function __construct()
     {
-        $this->teams = new ArrayCollection();
         $this->match = new ArrayCollection();
     }
 
@@ -152,37 +151,24 @@ class Tournament
     }
 
     /**
-     * @return Collection|Teams[]
+     * @return Teams
      */
-    public function getTeams(): Collection
+    public function getTeams(): ?Teams
     {
         return $this->teams;
     }
 
     /**
-     * @param Teams $team
+     * @param Teams|null $teams
+     *
      * @return $this
      */
-    public function addTeam(Teams $team): self
+    public function setTeems(?Teams $teams): self
     {
-        if (!$this->teams->contains($team)) {
-            $this->teams[] = $team;
-        }
+        $this->teams = $teams;
 
         return $this;
     }
-
-    /**
-     * @param Teams $team
-     * @return $this
-     */
-    public function removeTeam(Teams $team): self
-    {
-        $this->teams->removeElement($team);
-
-        return $this;
-    }
-
     /**
      * @return Collection|Match[]
      */
