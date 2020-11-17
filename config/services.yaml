@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     base_host: '%env(BASE_HOST)%'
+    base_host_regex: '%env(BASE_HOST_REGEX)%'
 
 imports:
     - { resource: services/admin.yml }

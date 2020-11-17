@@ -26,10 +26,29 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class UserManager
 {
+    /**
+     * @var EntityManagerInterface
+     */
     protected $em;
+
+    /**
+     * @var UsersRepository
+     */
     protected $userRepository;
+
+    /**
+     * @var UserPasswordEncoderInterface
+     */
     protected $passwordEncoder;
+
+    /**
+     * @var LoggerInterface
+     */
     protected $logger;
+
+    /**
+     * @var \JMS\Serializer\Serializer
+     */
     protected $serializer;
 
     /**
@@ -53,6 +72,9 @@ class UserManager
         $this->serializer = SerializerBuilder::create()->build();
     }
 
+    /**
+     * @return Users
+     */
     public function createUser()
     {
         $user = new Users();
@@ -62,6 +84,9 @@ class UserManager
         return $user;
     }
 
+    /**
+     * @return string
+     */
     public function getAllUsers()
     {
         $users = $this->userRepository->findAll();
@@ -69,6 +94,10 @@ class UserManager
         return $jsonContent;
     }
 
+    /**
+     * @param string $summonerName
+     * @return Users
+     */
     public function getUserBySummonerName(string $summonerName)
     {
         try {
@@ -81,6 +110,10 @@ class UserManager
         }
     }
 
+    /**
+     * @param string $email
+     * @return Users
+     */
     public function getUserByEmail(string $email)
     {
         try {
@@ -93,6 +126,10 @@ class UserManager
         }
     }
 
+    /**
+     * @param string $token
+     * @return Users
+     */
     public function getUserByToken(string $token)
     {
         try {
@@ -104,6 +141,10 @@ class UserManager
         }
     }
 
+    /**
+     * @param Users $users
+     * @throws \Exception
+     */
     public function updatePassword(Users $users)
     {
         if (0 !== strlen($password = $users->getPlainPassword())) {
@@ -113,6 +154,11 @@ class UserManager
         }
     }
 
+    /**
+     * @param $users
+     * @param bool $andFlush
+     * @throws \Exception
+     */
     public function save($users, $andFlush = true)
     {
         $this->updatePassword($users);
