@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\MatchsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations\Property;
 
 /**
  * @ORM\Entity(repositoryClass=MatchsRepository::class)
@@ -29,6 +30,7 @@ class Matchs
 
     /**
      * @ORM\Column(type="json")
+     * @Property(type="json")
      */
     private $data = [];
 

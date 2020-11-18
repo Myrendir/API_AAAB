@@ -13,7 +13,7 @@ nelmio_api_doc:
     models:
         names:
             - { alias: Users, type: App\Entity\Users }
-            - { alias: Match, type: App\Entity\Match }
+            - { alias: Match, type: App\Entity\Matchs }
             - { alias: Tournament, type: App\Entity\Tournament }
             - { alias: Type, type: App\Entity\Type }
             - { alias: Teams, type: App\Entity\Teams }

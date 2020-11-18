@@ -8,11 +8,11 @@
 
 namespace App\Controller;
 
-use App\Entity\Tournament;
 use App\Form\Entity\TournamentFormType;
 use App\Manager\TeamManager;
 use App\Manager\TournamentManager;
 use JMS\Serializer\SerializerBuilder;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -40,6 +40,8 @@ class TournamentController extends AbstractController
      * @param TeamManager $teamManager
      *
      * @return JsonResponse
+     *
+     * @Security(name="Bearer")
      */
     public function createAction(Request $request, TournamentManager $tournamentManager, ValidatorInterface $validator, TeamManager $teamManager)
     {
@@ -70,6 +72,8 @@ class TournamentController extends AbstractController
      * @param TournamentManager $tournamentManager
      *
      * @return Response
+     *
+     * @Security(name="Bearer")
      */
     public function listAction(TournamentManager $tournamentManager)
     {
@@ -86,6 +90,8 @@ class TournamentController extends AbstractController
      * @param TournamentManager $tournamentManager
      *
      * @return Response
+     *
+     * @Security(name="Bearer")
      */
     public function getTournamentByName($name, TournamentManager $tournamentManager)
     {
@@ -110,6 +116,8 @@ class TournamentController extends AbstractController
      * @param TeamManager $teamManager
      *
      * @return JsonResponse
+     *
+     * @Security(name="Bearer")
      */
     public function updateAction($name, TournamentManager $tournamentManager, Request $request, ValidatorInterface $validator, TeamManager $teamManager)
     {
@@ -135,6 +143,5 @@ class TournamentController extends AbstractController
 
         $tournamentManager->save($tournament);
         return new JsonResponse('Tournament updated', Response::HTTP_OK);
-
     }
 }

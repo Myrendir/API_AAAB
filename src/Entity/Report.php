@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\ReportRepository;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations\Items;
+use OpenApi\Annotations\Property;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -35,6 +37,7 @@ class Report
 
     /**
      * @ORM\Column(type="array")
+     * @Property(type="array", @Items(type="string"))
      */
     private $motif = [];
 

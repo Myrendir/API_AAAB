@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UsersRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use JMS\Serializer\Annotation as Serializer;
 use OpenApi\Annotations\Items;
 use OpenApi\Annotations\Property;
@@ -139,29 +141,43 @@ class Users implements UserInterface
     private $token;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Teams::class, inversedBy="top")
+     * @ORM\OneToMany(targetEntity=Teams::class, mappedBy="top", indexBy="name")
+     * @Serializer\Groups(groups={"User"})
      */
     private $top;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Teams::class, inversedBy="jungle")
-     */
-    private $jungle;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Teams::class, inversedBy="mid")
+     * @ORM\OneToMany(targetEntity=Teams::class, mappedBy="mid", indexBy="name")
+     * @Serializer\Groups(groups={"User"})
      */
     private $mid;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Teams::class, inversedBy="adc")
+     * @ORM\OneToMany(targetEntity=Teams::class, mappedBy="adc", indexBy="name")
+     * @Serializer\Groups(groups={"User"})
      */
     private $adc;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Teams::class, inversedBy="support")
+     * @ORM\OneToMany(targetEntity=Teams::class, mappedBy="jungle", indexBy="name")
+     * @Serializer\Groups(groups={"User"})
+     */
+    private $jungle;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Teams::class, mappedBy="support", indexBy="name")
+     * @Serializer\Groups(groups={"User"})
      */
     private $support;
+
+    public function __construct()
+    {
+        $this->top = new ArrayCollection();
+        $this->mid = new ArrayCollection();
+        $this->adc = new ArrayCollection();
+        $this->jungle = new ArrayCollection();
+        $this->support = new ArrayCollection();
+    }
 
     /**
      * @ORM\PrePersist()
@@ -299,66 +315,6 @@ class Users implements UserInterface
         return $this;
     }
 
-    public function getTop(): ?Teams
-    {
-        return $this->top;
-    }
-
-    public function setTop(?Teams $top): self
-    {
-        $this->top = $top;
-
-        return $this;
-    }
-
-    public function getJungle(): ?Teams
-    {
-        return $this->jungle;
-    }
-
-    public function setJungle(?Teams $jungle): self
-    {
-        $this->jungle = $jungle;
-
-        return $this;
-    }
-
-    public function getMid(): ?Teams
-    {
-        return $this->mid;
-    }
-
-    public function setMid(?Teams $mid): self
-    {
-        $this->mid = $mid;
-
-        return $this;
-    }
-
-    public function getAdc(): ?Teams
-    {
-        return $this->adc;
-    }
-
-    public function setAdc(?Teams $adc): self
-    {
-        $this->adc = $adc;
-
-        return $this;
-    }
-
-    public function getSupport(): ?Teams
-    {
-        return $this->support;
-    }
-
-    public function setSupport(?Teams $support): self
-    {
-        $this->support = $support;
-
-        return $this;
-    }
-
     /**
      * @return string
      * @Property(type="string", property="summonerName")
@@ -383,5 +339,155 @@ class Users implements UserInterface
     public function isEnabled()
     {
         return true === $this->isEnabled;
+    }
+
+    /**
+     * @return Collection|Teams[]
+     */
+    public function getTop(): Collection
+    {
+        return $this->top;
+    }
+
+    public function addTop(Teams $top): self
+    {
+        if (!$this->top->contains($top)) {
+            $this->top[] = $top;
+            $top->setTop($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTop(Teams $top): self
+    {
+        if ($this->top->removeElement($top)) {
+            // set the owning side to null (unless already changed)
+            if ($top->getTop() === $this) {
+                $top->setTop(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Teams[]
+     */
+    public function getMid(): Collection
+    {
+        return $this->mid;
+    }
+
+    public function addMid(Teams $mid): self
+    {
+        if (!$this->mid->contains($mid)) {
+            $this->mid[] = $mid;
+            $mid->setMid($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMid(Teams $mid): self
+    {
+        if ($this->mid->removeElement($mid)) {
+            // set the owning side to null (unless already changed)
+            if ($mid->getMid() === $this) {
+                $mid->setMid(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Teams[]
+     */
+    public function getAdc(): Collection
+    {
+        return $this->adc;
+    }
+
+    public function addAdc(Teams $adc): self
+    {
+        if (!$this->adc->contains($adc)) {
+            $this->adc[] = $adc;
+            $adc->setAdc($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdc(Teams $adc): self
+    {
+        if ($this->adc->removeElement($adc)) {
+            // set the owning side to null (unless already changed)
+            if ($adc->getAdc() === $this) {
+                $adc->setAdc(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Teams[]
+     */
+    public function getJungle(): Collection
+    {
+        return $this->jungle;
+    }
+
+    public function addJungle(Teams $jungle): self
+    {
+        if (!$this->jungle->contains($jungle)) {
+            $this->jungle[] = $jungle;
+            $jungle->setJungle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJungle(Teams $jungle): self
+    {
+        if ($this->jungle->removeElement($jungle)) {
+            // set the owning side to null (unless already changed)
+            if ($jungle->getJungle() === $this) {
+                $jungle->setJungle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Teams[]
+     */
+    public function getSupport(): Collection
+    {
+        return $this->support;
+    }
+
+    public function addSupport(Teams $support): self
+    {
+        if (!$this->support->contains($support)) {
+            $this->support[] = $support;
+            $support->setSupport($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSupport(Teams $support): self
+    {
+        if ($this->support->removeElement($support)) {
+            // set the owning side to null (unless already changed)
+            if ($support->getSupport() === $this) {
+                $support->setSupport(null);
+            }
+        }
+
+        return $this;
     }
 }
