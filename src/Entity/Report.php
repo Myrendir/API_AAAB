@@ -20,7 +20,6 @@ class Report
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\NotBlank(message="The field Date is missing")
      */
     private $date;
 
@@ -33,6 +32,11 @@ class Report
      * )
      */
     private $comment;
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $motif = [];
 
     public function getId(): ?int
     {
@@ -59,6 +63,18 @@ class Report
     public function setComment(string $comment): self
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getMotif(): ?array
+    {
+        return $this->motif;
+    }
+
+    public function setMotif(array $motif): self
+    {
+        $this->motif = $motif;
 
         return $this;
     }
