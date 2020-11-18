@@ -6,9 +6,12 @@ use App\Repository\TournamentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TournamentRepository::class)
+ * @UniqueEntity(fields={"name"}, message="This name is already to used !")
  */
 class Tournament
 {
@@ -21,11 +24,20 @@ class Tournament
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *     min="5",
+     *     minMessage="This field must contains 5 characters minimum",
+     *     max="50",
+     *     maxMessage="The field name must not contain 50 characters"
+     * )
      */
     private $name;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message="The field slots should not blank or not string")
+     * @Assert\Positive()
      */
     private $slots;
 

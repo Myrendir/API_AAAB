@@ -95,10 +95,10 @@ class UserManager
     }
 
     /**
-     * @param string $summonerName
+     * @param $summonerName
      * @return Users
      */
-    public function getUserBySummonerName(string $summonerName)
+    public function getUserBySummonerName($summonerName)
     {
         try {
             /** @var Users $user */
