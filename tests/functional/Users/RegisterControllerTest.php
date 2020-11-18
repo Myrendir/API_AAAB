@@ -2,7 +2,6 @@
 
 namespace App\Tests;
 
-use App\Tests\_data\fixtures\UsersFixtures;
 use Codeception\Util\HttpCode;
 
 class RegisterControllerTest extends \Codeception\Test\Unit
@@ -14,7 +13,6 @@ class RegisterControllerTest extends \Codeception\Test\Unit
     
     protected function _before()
     {
-        $this->tester->loadFixtures(UsersFixtures::class, false);
     }
 
     protected function _after()
@@ -44,6 +42,7 @@ class RegisterControllerTest extends \Codeception\Test\Unit
             'username' => 'Michel',
             'password' => 'michelle1',
         ]);
+
         $this->tester->seeResponseCodeIs(HttpCode::OK);
     }
 
@@ -90,7 +89,8 @@ class RegisterControllerTest extends \Codeception\Test\Unit
             'password' => 'michelle1',
             'confirmPassword' => 'michelle1'
         ]);
-        $this->tester->seeResponseContainsJson([0 => 'This summonerName is already used.']);
+
+        $this->tester->seeResponseContainsJson([0 => 'This summonerName is already used !']);
         $this->tester->seeResponseCodeIs(HttpCode::BAD_REQUEST);
     }
 }

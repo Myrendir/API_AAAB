@@ -2,7 +2,6 @@
 
 namespace App\Tests;
 
-use App\Tests\_data\fixtures\UsersFixtures;
 use Codeception\Util\HttpCode;
 
 class UserControllerTest extends \Codeception\Test\Unit
@@ -14,7 +13,6 @@ class UserControllerTest extends \Codeception\Test\Unit
     
     protected function _before()
     {
-        $this->tester->loadFixtures(UsersFixtures::class, false);
     }
 
     protected function _after()
