@@ -65,6 +65,11 @@ class Tournament
      */
     private $matchs;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isEnabled;
+
     public function __construct()
     {
         $this->teams = new ArrayCollection();
@@ -174,6 +179,18 @@ class Tournament
                 $match->setTournament(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsEnabled(): ?bool
+    {
+        return $this->isEnabled;
+    }
+
+    public function setIsEnabled(bool $isEnabled): self
+    {
+        $this->isEnabled = $isEnabled;
 
         return $this;
     }

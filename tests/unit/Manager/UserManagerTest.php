@@ -1,4 +1,6 @@
-<?php namespace App\Tests;
+<?php
+
+namespace App\Tests;
 
 use App\Entity\Users;
 use App\Manager\UserManager;

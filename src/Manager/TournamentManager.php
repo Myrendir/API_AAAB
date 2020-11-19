@@ -71,6 +71,7 @@ class TournamentManager
     public function createTournament()
     {
         $tournament = new Tournament();
+        $tournament->setIsEnabled(true);
 
         return $tournament;
     }
@@ -89,7 +90,7 @@ class TournamentManager
             $tournament = $this->tournamentRepository->findOneBy(['name' => $name]);
             return $tournament;
         } catch (NonUniqueResultException $e) {
-            $this->logger->error(sprintf("There are multiple tournament with the name %s", $name));
+            $this->logger->error(sprintf("There are multiple tournament with the name : %s", $name));
         } catch (NoResultException $e) {
         }
     }

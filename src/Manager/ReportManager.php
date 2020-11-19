@@ -51,6 +51,7 @@ class ReportManager
     {
         $report = new Report();
         $report->setDate(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+        $report->setIsEnabled(false);
 
         return $report;
     }

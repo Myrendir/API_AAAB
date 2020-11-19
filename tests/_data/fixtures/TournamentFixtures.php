@@ -25,6 +25,22 @@ class TournamentFixtures extends AbstractFixture
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create();
+        $team1 = new Teams();
+        $team1
+            ->setName($faker->name)
+            ->setStatus(true)
+        ;
+        $manager->persist($team1);
+        $tournament1 = new Tournament();
+        $tournament1
+            ->setName('Tournament1')
+            ->setFormat(['5vs5'])
+            ->setMap(['Summoner\'s Rift'])
+            ->setSlots($faker->numberBetween(0, 150))
+            ->addTeam($team1)
+            ->setIsEnabled(true)
+        ;
+        $manager->persist($tournament1);
         for ($j = 0; $j < 10; $j++) {
             $team = new Teams();
             $team
@@ -40,6 +56,7 @@ class TournamentFixtures extends AbstractFixture
                     ->setMap(['Summoner\'s Rift'])
                     ->setSlots($faker->numberBetween(0, 150))
                     ->addTeam($team)
+                    ->setIsEnabled(true)
                 ;
                 $manager->persist($tournament);
             }

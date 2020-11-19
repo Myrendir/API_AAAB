@@ -46,6 +46,11 @@ class Report
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isEnabled;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -95,6 +100,18 @@ class Report
     public function setUser(?Users $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getIsEnabled(): ?bool
+    {
+        return $this->isEnabled;
+    }
+
+    public function setIsEnabled(bool $isEnabled): self
+    {
+        $this->isEnabled = $isEnabled;
 
         return $this;
     }

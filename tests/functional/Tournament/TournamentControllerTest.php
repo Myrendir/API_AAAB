@@ -41,4 +41,34 @@ class TournamentControllerTest extends \Codeception\Test\Unit
         $this->tester->seeResponseCodeIs(200);
         $this->tester->seeResponseContainsJson([0 => ['id' => 1]]);
     }
+
+    public function testGetTournamentByName()
+    {
+        $this->tester->createAuthenticatedClient('Michel', 'michelle1');
+
+        $this->tester->sendGet('/api/tournament/get/Tournament1');
+        $this->tester->seeResponseCodeIs(200);
+    }
+
+    public function testUpdateTournament()
+    {
+        $this->tester->createAuthenticatedClient('Michel', 'michelle1');
+
+        $this->tester->sendPatchJson('/api/tournament/update/Tournament1', [
+            'name' => 'Tournoi1',
+            'format' => ['3vs3'],
+            'map' => ['Aram'],
+            'slots' => 25,
+            'teams' => 'Team1'
+        ]);
+        $this->tester->seeResponseCodeIs(200);
+        $this->tester->seeResponseContainsJson([0 => 'Tournament updated']);
+        $this->tester->sendGet('/api/tournament/get/Tournoi1');
+        $this->tester->seeResponseContainsJson([
+            'name' => 'Tournoi1',
+            'format' => ['3vs3'],
+            'map' => ['Aram'],
+            'slots' => 25
+        ]);
+    }
 }

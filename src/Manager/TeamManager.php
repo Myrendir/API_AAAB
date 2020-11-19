@@ -78,7 +78,7 @@ class TeamManager
             $team = $this->teamRepository->findOneBy(['name' => $name]);
             return $team;
         } catch (NonUniqueResultException $exception) {
-            $this->logger->error(sprintf('Multiple teams returned with the same name: %s', $name));
+            $this->logger->error(sprintf('Multiple teams returned with the same name : %s', $name));
         } catch (NoResultException $exception) {
         }
     }
