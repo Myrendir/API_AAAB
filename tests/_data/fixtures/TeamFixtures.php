@@ -24,6 +24,13 @@ class TeamFixtures extends AbstractFixture
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create();
+        $team1 = new Teams();
+        $team1
+            ->setName('Team1')
+            ->setStatus(true)
+        ;
+        $manager->persist($team1);
+
         for ($i = 0; $i < 10; $i++) {
             $team = new Teams();
             $team
