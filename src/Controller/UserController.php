@@ -105,6 +105,7 @@ class UserController extends AbstractController
         $user = $userManager->getUserBySummonerName($users->getSummonerName());
         $serialize = SerializerBuilder::create()->build();
         $jsonContent = $serialize->serialize($user, 'json', SerializationContext::create()->setGroups(['User']));
+
         return new Response($jsonContent);
     }
 }

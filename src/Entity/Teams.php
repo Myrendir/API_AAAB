@@ -6,6 +6,7 @@ use App\Repository\TeamsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations\Property;
 
 /**
  * @ORM\Entity(repositoryClass=TeamsRepository::class)
@@ -35,44 +36,40 @@ class Teams
     private $status;
 
     /**
-     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="top")
+     * @ORM\ManyToMany(targetEntity=Tournament::class, mappedBy="teams")
+     * @Property(type="anyOf", schema="Tournament")
+     */
+    private $tournaments;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="top")
      */
     private $top;
 
     /**
-     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="jungle")
-     */
-    private $jungle;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="mid")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="mid")
      */
     private $mid;
 
     /**
-     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="adc")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="adc")
      */
     private $adc;
 
     /**
-     * @ORM\OneToMany(targetEntity=Users::class, mappedBy="support")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="jungle")
+     */
+    private $jungle;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="support")
      */
     private $support;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Tournament::class, mappedBy="teams")
+     * @ORM\ManyToOne(targetEntity=Type::class, inversedBy="teams")
      */
-    private $tournaments;
-
-    public function __construct()
-    {
-        $this->top = new ArrayCollection();
-        $this->jungle = new ArrayCollection();
-        $this->mid = new ArrayCollection();
-        $this->adc = new ArrayCollection();
-        $this->support = new ArrayCollection();
-        $this->tournaments = new ArrayCollection();
-    }
+    private $type;
 
     public function getId(): ?int
     {
@@ -116,156 +113,6 @@ class Teams
     }
 
     /**
-     * @return Collection|Users[]
-     */
-    public function getTop(): Collection
-    {
-        return $this->top;
-    }
-
-    public function addTop(Users $top): self
-    {
-        if (!$this->top->contains($top)) {
-            $this->top[] = $top;
-            $top->setTop($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTop(Users $top): self
-    {
-        if ($this->top->removeElement($top)) {
-            // set the owning side to null (unless already changed)
-            if ($top->getTop() === $this) {
-                $top->setTop(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Users[]
-     */
-    public function getJungle(): Collection
-    {
-        return $this->jungle;
-    }
-
-    public function addJungle(Users $jungle): self
-    {
-        if (!$this->jungle->contains($jungle)) {
-            $this->jungle[] = $jungle;
-            $jungle->setJungle($this);
-        }
-
-        return $this;
-    }
-
-    public function removeJungle(Users $jungle): self
-    {
-        if ($this->jungle->removeElement($jungle)) {
-            // set the owning side to null (unless already changed)
-            if ($jungle->getJungle() === $this) {
-                $jungle->setJungle(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Users[]
-     */
-    public function getMid(): Collection
-    {
-        return $this->mid;
-    }
-
-    public function addMid(Users $mid): self
-    {
-        if (!$this->mid->contains($mid)) {
-            $this->mid[] = $mid;
-            $mid->setMid($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMid(Users $mid): self
-    {
-        if ($this->mid->removeElement($mid)) {
-            // set the owning side to null (unless already changed)
-            if ($mid->getMid() === $this) {
-                $mid->setMid(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Users[]
-     */
-    public function getAdc(): Collection
-    {
-        return $this->adc;
-    }
-
-    public function addAdc(Users $adc): self
-    {
-        if (!$this->adc->contains($adc)) {
-            $this->adc[] = $adc;
-            $adc->setAdc($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAdc(Users $adc): self
-    {
-        if ($this->adc->removeElement($adc)) {
-            // set the owning side to null (unless already changed)
-            if ($adc->getAdc() === $this) {
-                $adc->setAdc(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Users[]
-     */
-    public function getSupport(): Collection
-    {
-        return $this->support;
-    }
-
-    public function addSupport(Users $support): self
-    {
-        if (!$this->support->contains($support)) {
-            $this->support[] = $support;
-            $support->setSupport($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSupport(Users $support): self
-    {
-        if ($this->support->removeElement($support)) {
-            // set the owning side to null (unless already changed)
-            if ($support->getSupport() === $this) {
-                $support->setSupport(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Tournament[]
      */
     public function getTournaments(): Collection
@@ -288,6 +135,78 @@ class Teams
         if ($this->tournaments->removeElement($tournament)) {
             $tournament->removeTeam($this);
         }
+
+        return $this;
+    }
+
+    public function getTop(): ?Users
+    {
+        return $this->top;
+    }
+
+    public function setTop(?Users $top): self
+    {
+        $this->top = $top;
+
+        return $this;
+    }
+
+    public function getMid(): ?Users
+    {
+        return $this->mid;
+    }
+
+    public function setMid(?Users $mid): self
+    {
+        $this->mid = $mid;
+
+        return $this;
+    }
+
+    public function getAdc(): ?Users
+    {
+        return $this->adc;
+    }
+
+    public function setAdc(?Users $adc): self
+    {
+        $this->adc = $adc;
+
+        return $this;
+    }
+
+    public function getJungle(): ?Users
+    {
+        return $this->jungle;
+    }
+
+    public function setJungle(?Users $jungle): self
+    {
+        $this->jungle = $jungle;
+
+        return $this;
+    }
+
+    public function getSupport(): ?Users
+    {
+        return $this->support;
+    }
+
+    public function setSupport(?Users $support): self
+    {
+        $this->support = $support;
+
+        return $this;
+    }
+
+    public function getType(): ?Type
+    {
+        return $this->type;
+    }
+
+    public function setType(?Type $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

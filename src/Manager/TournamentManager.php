@@ -11,6 +11,8 @@ namespace App\Manager;
 use App\Entity\Tournament;
 use App\Repository\TournamentRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerBuilder;
 use Psr\Log\LoggerInterface;
@@ -71,6 +73,25 @@ class TournamentManager
         $tournament = new Tournament();
 
         return $tournament;
+    }
+
+    public function getAllTournament()
+    {
+        $tournament = $this->tournamentRepository->findAll();
+        $jsonContent = $this->serializer->serialize($tournament, 'json');
+        return $jsonContent;
+    }
+
+    public function getTournamentByName($name)
+    {
+        try {
+            /** @var Tournament $tournament */
+            $tournament = $this->tournamentRepository->findOneBy(['name' => $name]);
+            return $tournament;
+        } catch (NonUniqueResultException $e) {
+            $this->logger->error(sprintf("There are multiple tournament with the name %s", $name));
+        } catch (NoResultException $e) {
+        }
     }
 
     /**

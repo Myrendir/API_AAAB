@@ -8,6 +8,7 @@
 
 namespace App\Admin;
 
+use App\Entity\Teams;
 use App\Entity\Type;
 use App\Entity\Users;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -27,6 +28,21 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
  */
 class TeamsAdmin extends AbstractAdmin
 {
+    /**
+     * @param object|null $object
+     *
+     * @return string|null
+     */
+    public function toString($object)
+    {
+        return $object instanceof Teams
+            ? $object->getName()
+            : 'Team : Name';
+    }
+
+    /**
+     * @param FormMapper $form
+     */
     protected function configureFormFields(FormMapper $form)
     {
         $form
@@ -42,31 +58,29 @@ class TeamsAdmin extends AbstractAdmin
             ->add('top', ModelType::class, [
                 'class' => Users::class,
                 'property' => 'summonerName',
-                'multiple' => true
             ])
             ->add('mid', ModelType::class, [
                 'class' => Users::class,
                 'property' => 'summonerName',
-                'multiple' => true
             ])
             ->add('jungle', ModelType::class, [
                 'class' => Users::class,
                 'property' => 'summonerName',
-                'multiple' => true
             ])
             ->add('adc', ModelType::class, [
                 'class' => Users::class,
                 'property' => 'summonerName',
-                'multiple' => true
             ])
             ->add('support', ModelType::class, [
                 'class' => Users::class,
                 'property' => 'summonerName',
-                'multiple' => true
             ])
         ;
     }
 
+    /**
+     * @param ListMapper $list
+     */
     protected function configureListFields(ListMapper $list)
     {
         $list
@@ -94,6 +108,9 @@ class TeamsAdmin extends AbstractAdmin
         ;
     }
 
+    /**
+     * @param DatagridMapper $filter
+     */
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
         $filter

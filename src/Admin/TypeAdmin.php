@@ -9,6 +9,7 @@
 namespace App\Admin;
 
 use App\Entity\Teams;
+use App\Entity\Type;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -24,6 +25,21 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
  */
 class TypeAdmin extends AbstractAdmin
 {
+    /**
+     * @param object|null $object
+     *
+     * @return string|null
+     */
+    public function toString($object)
+    {
+        return $object instanceof Type
+            ? $object->getTitle()
+            : 'Type : Title';
+    }
+
+    /**
+     * @param FormMapper $form
+     */
     protected function configureFormFields(FormMapper $form)
     {
         $form
@@ -31,6 +47,9 @@ class TypeAdmin extends AbstractAdmin
         ;
     }
 
+    /**
+     * @param ListMapper $list
+     */
     protected function configureListFields(ListMapper $list)
     {
         $list
@@ -41,6 +60,9 @@ class TypeAdmin extends AbstractAdmin
         ;
     }
 
+    /**
+     * @param DatagridMapper $filter
+     */
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
         $filter

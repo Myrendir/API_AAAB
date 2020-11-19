@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\ReportRepository;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations\Items;
+use OpenApi\Annotations\Property;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -35,8 +37,14 @@ class Report
 
     /**
      * @ORM\Column(type="array")
+     * @Property(type="array", @Items(type="string"))
      */
     private $motif = [];
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="reports")
+     */
+    private $user;
 
     public function getId(): ?int
     {
@@ -75,6 +83,18 @@ class Report
     public function setMotif(array $motif): self
     {
         $this->motif = $motif;
+
+        return $this;
+    }
+
+    public function getUser(): ?Users
+    {
+        return $this->user;
+    }
+
+    public function setUser(?Users $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

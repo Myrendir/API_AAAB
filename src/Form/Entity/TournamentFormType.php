@@ -8,7 +8,9 @@
 
 namespace App\Form\Entity;
 
+use App\Entity\Teams;
 use App\Entity\Tournament;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -31,10 +33,19 @@ class TournamentFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
+            ->add('name', TextType::class, [
+                'documentation' => [
+                    'type' => 'string',
+                    'description' => 'Name team'
+                ]
+            ])
             ->add('map', CollectionType::class)
             ->add('format', CollectionType::class)
             ->add('slots', NumberType::class)
+            ->add('teams', EntityType::class, [
+                'class' => Teams::class,
+                'choice_label' => 'name'
+            ])
         ;
     }
 

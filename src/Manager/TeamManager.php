@@ -64,6 +64,13 @@ class TeamManager
         return $team;
     }
 
+    public function getAllTeams()
+    {
+        $teams = $this->teamRepository->findAll();
+        $jsonContent = $this->serializer->serialize($teams, 'json');
+        return $jsonContent;
+    }
+
     public function getTeamByName($name)
     {
         try {

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TypeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -28,6 +30,16 @@ class Type
      */
     private $title;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Teams::class, mappedBy="type")
+     */
+    private $teams;
+
+    public function __construct()
+    {
+        $this->teams = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -41,6 +53,36 @@ class Type
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Teams[]
+     */
+    public function getTeams(): Collection
+    {
+        return $this->teams;
+    }
+
+    public function addTeam(Teams $team): self
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams[] = $team;
+            $team->setType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeam(Teams $team): self
+    {
+        if ($this->teams->removeElement($team)) {
+            // set the owning side to null (unless already changed)
+            if ($team->getType() === $this) {
+                $team->setType(null);
+            }
+        }
 
         return $this;
     }
