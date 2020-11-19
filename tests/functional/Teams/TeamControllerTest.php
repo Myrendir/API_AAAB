@@ -21,11 +21,11 @@ class TeamControllerTest extends \Codeception\Test\Unit
         $this->tester->createAuthenticatedClient('Michel', 'michelle1');
         $this->tester->sendPostJson('/api/team/create', [
             'name' => 'Best',
-            'top' => 1,
-            'mid' => 2,
-            'adc' => 3,
-            'jungle' => 4,
-            'support' => 5,
+            'top' => 'Michel',
+            'mid' => 'Michel',
+            'adc' => 'Michel',
+            'jungle' => 'Michel',
+            'support' => 'Michel',
         ]);
         $this->tester->seeResponseCodeIs(200);
         $this->tester->seeResponseContainsJson([0 => 'Team created']);
