@@ -63,7 +63,7 @@ class TournamentController extends AbstractController
         }
         $tournamentManager->save($tournament);
 
-        return new JsonResponse('Tournament created!', Response::HTTP_OK);
+        return new JsonResponse('Tournament created', Response::HTTP_OK);
     }
 
     /**
