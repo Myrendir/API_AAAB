@@ -30,4 +30,13 @@ class TeamControllerTest extends \Codeception\Test\Unit
         $this->tester->seeResponseCodeIs(200);
         $this->tester->seeResponseContainsJson([0 => 'Team created']);
     }
+
+    public function testListTeams()
+    {
+        $this->tester->createAuthenticatedClient('Michel', 'michelle1');
+
+        $this->tester->sendGet('/api/team/list');
+        $this->tester->seeResponseCodeIs(200);
+
+    }
 }

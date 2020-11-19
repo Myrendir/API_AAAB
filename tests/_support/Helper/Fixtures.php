@@ -8,6 +8,8 @@
 
 namespace App\Tests\Helper;
 
+use App\Tests\_data\fixtures\TeamFixtures;
+use App\Tests\_data\fixtures\TournamentFixtures;
 use App\Tests\_data\fixtures\UsersFixtures;
 use Codeception\Module\Doctrine2;
 use Doctrine\Common\DataFixtures\Loader;
@@ -144,6 +146,8 @@ class Fixtures extends \Codeception\Module
         $doctrine = $this->getModule('Doctrine2');
         $doctrine->loadFixtures([
             UsersFixtures::class,
+            TeamFixtures::class,
+            TournamentFixtures::class
         ], false);
     }
 
