@@ -1,4 +1,4 @@
-<?php namespace App\Tests\Teams;
+<?php namespace App\Tests;
 
 class TeamControllerTest extends \Codeception\Test\Unit
 {

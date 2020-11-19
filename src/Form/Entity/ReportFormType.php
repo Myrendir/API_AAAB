@@ -9,6 +9,8 @@
 namespace App\Form\Entity;
 
 use App\Entity\Report;
+use App\Entity\Users;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -30,6 +32,10 @@ class ReportFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('user', EntityType::class, [
+                'class' => Users::class,
+                'choice_label' => 'summonerName'
+            ])
             ->add('comment', TextType::class)
             ->add('motif', CollectionType::class)
         ;

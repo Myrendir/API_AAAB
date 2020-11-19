@@ -49,7 +49,10 @@ class ReportManager
      */
     public function createReport()
     {
-        return new Report();
+        $report = new Report();
+        $report->setDate(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+
+        return $report;
     }
 
     /**

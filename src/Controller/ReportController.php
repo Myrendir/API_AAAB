@@ -23,7 +23,7 @@ class ReportController extends AbstractController
      * @param Request $request
      * @param ReportManager $reportManager
      * @param ValidatorInterface $validator
-     * @Route("/create", name="report_create", methods={"POST"})
+     * @Route("/create", name="create", methods={"POST"})
      * @return JsonResponse
      */
     public function createReport(Request $request, ReportManager $reportManager, ValidatorInterface $validator)

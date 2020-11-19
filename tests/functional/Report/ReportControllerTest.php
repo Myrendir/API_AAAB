@@ -1,36 +1,33 @@
-<?php
+<?php namespace App\Tests\Report;
 
-namespace App\Tests;
-
-use Codeception\Test\Unit;
-use Codeception\Util\HttpCode;
-
-class ReportControllerTest extends Unit
+class ReportControllerTest extends \Codeception\Test\Unit
 {
-    protected $test;
-
+    /**
+     * @var \App\Tests\FunctionalTester
+     */
+    protected $tester;
+    
     protected function _before()
     {
-        parent::_before();
     }
 
     protected function _after()
     {
-        parent::_after();
     }
 
-
+    // tests
     public function testAddReport()
     {
+        $this->tester->createAuthenticatedClient('Alex', 'michelle1');
         /**
          * Try to create a report
          */
-        $this->test->sendPostJson('/api/report/create', [
-            'Motif' => 'Insult',
-            'Comment' => 'Il n\'a pas arrêté de me flame'
+        $this->tester->sendPostJson('/api/report/create', [
+            'user' => 'Michel',
+            'motif' => 'Insult',
+            'comment' => 'Il n\'a pas arrêté de me flame'
         ]);
-        $this->test->seeResponseContainsJson([0 => 'Successfully reported']);
-        $this->test->seeResponseCodeIsSuccessFul();
+        $this->tester->seeResponseContainsJson([0 => 'Report created.']);
+        $this->tester->seeResponseCodeIsSuccessFul();
     }
-
 }
