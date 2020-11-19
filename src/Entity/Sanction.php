@@ -4,12 +4,17 @@ namespace App\Entity;
 
 use App\Repository\SanctionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity(repositoryClass=SanctionRepository::class)
  */
 class Sanction
 {
+    use BlameableEntity,
+        TimestampableEntity;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

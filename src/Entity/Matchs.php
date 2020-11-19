@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\MatchsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use OpenApi\Annotations\Property;
 
 /**
@@ -11,6 +13,9 @@ use OpenApi\Annotations\Property;
  */
 class Matchs
 {
+    use BlameableEntity,
+        TimestampableEntity;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

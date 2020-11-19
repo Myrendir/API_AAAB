@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\UsersRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use JMS\Serializer\Annotation as Serializer;
 use OpenApi\Annotations\Items;
 use OpenApi\Annotations\Property;
@@ -31,6 +33,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Users implements UserInterface
 {
+    use TimestampableEntity;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

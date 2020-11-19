@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\ReportRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use OpenApi\Annotations\Items;
 use OpenApi\Annotations\Property;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,6 +15,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Report
 {
+    use BlameableEntity,
+        TimestampableEntity;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

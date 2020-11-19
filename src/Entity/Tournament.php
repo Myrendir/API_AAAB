@@ -6,6 +6,8 @@ use App\Repository\TournamentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use OpenApi\Annotations\Items;
 use OpenApi\Annotations\Property;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -17,6 +19,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Tournament
 {
+    use BlameableEntity,
+        TimestampableEntity;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
