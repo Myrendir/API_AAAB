@@ -12,13 +12,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * Class ReportController
+ * @package App\Controller
+ * @Route("/api/report", name="report_")
+ */
 class ReportController extends AbstractController
 {
     /**
      * @param Request $request
      * @param ReportManager $reportManager
      * @param ValidatorInterface $validator
-     * @Route("/api/report", name="report_add", methods={"POST"})
+     * @Route("/create", name="report_create", methods={"POST"})
      * @return JsonResponse
      */
     public function createReport(Request $request, ReportManager $reportManager, ValidatorInterface $validator)

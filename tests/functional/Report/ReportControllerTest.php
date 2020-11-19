@@ -25,7 +25,7 @@ class ReportControllerTest extends Unit
         /**
          * Try to create a report
          */
-        $this->test->sendPostJson('/api/report', [
+        $this->test->sendPostJson('/api/report/create', [
             'Motif' => 'Insult',
             'Comment' => 'Il n\'a pas arrêté de me flame'
         ]);
