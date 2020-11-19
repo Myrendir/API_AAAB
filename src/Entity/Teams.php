@@ -43,33 +43,33 @@ class Teams
 
     /**
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="top")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $top;
 
     /**
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="mid")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $mid;
 
     /**
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="adc")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $adc;
 
     /**
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="jungle")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $jungle;
 
     /**
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="support")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $support;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Type::class, inversedBy="teams")
+     */
+    private $type;
 
     public function getId(): ?int
     {
@@ -195,6 +195,18 @@ class Teams
     public function setSupport(?Users $support): self
     {
         $this->support = $support;
+
+        return $this;
+    }
+
+    public function getType(): ?Type
+    {
+        return $this->type;
+    }
+
+    public function setType(?Type $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

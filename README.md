@@ -40,3 +40,9 @@ php -S localhost:8000 -t public
 
 The project is already for the development
 
+For run the tests, run this command :
+```
+./vendor/bin/codecept run functional
+./vendor/bin/codecept run unit
+```
+

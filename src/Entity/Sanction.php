@@ -32,6 +32,11 @@ class Sanction
      */
     private $motif;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="sanctions")
+     */
+    private $user;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +74,18 @@ class Sanction
     public function setMotif(string $motif): self
     {
         $this->motif = $motif;
+
+        return $this;
+    }
+
+    public function getUser(): ?Users
+    {
+        return $this->user;
+    }
+
+    public function setUser(?Users $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

@@ -62,6 +62,7 @@ class UsersAdmin extends AbstractAdmin
 
     /**
      * @param object|null $object
+     *
      * @return string|null
      */
     public function toString($object)

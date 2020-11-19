@@ -94,18 +94,6 @@ class UserManager
         return $jsonContent;
     }
 
-    public function getUserById($id)
-    {
-        try {
-            /** @var Users $user */
-            $user = $this->userRepository->findOneBy(['id' => $id]);
-            return $user;
-        } catch (NonUniqueResultException $exception) {
-            $this->logger->error(sprintf('Multiple user returned with the same id: %s', $id));
-        } catch (NoResultException $exception) {
-        }
-    }
-
     /**
      * @param $summonerName
      * @return Users

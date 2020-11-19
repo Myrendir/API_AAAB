@@ -170,6 +170,16 @@ class Users implements UserInterface
      */
     private $support;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Report::class, mappedBy="user")
+     */
+    private $reports;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Sanction::class, mappedBy="user")
+     */
+    private $sanctions;
+
     public function __construct()
     {
         $this->top = new ArrayCollection();
@@ -177,6 +187,8 @@ class Users implements UserInterface
         $this->adc = new ArrayCollection();
         $this->jungle = new ArrayCollection();
         $this->support = new ArrayCollection();
+        $this->reports = new ArrayCollection();
+        $this->sanctions = new ArrayCollection();
     }
 
     /**
@@ -485,6 +497,66 @@ class Users implements UserInterface
             // set the owning side to null (unless already changed)
             if ($support->getSupport() === $this) {
                 $support->setSupport(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Report[]
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(Report $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports[] = $report;
+            $report->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(Report $report): self
+    {
+        if ($this->reports->removeElement($report)) {
+            // set the owning side to null (unless already changed)
+            if ($report->getUser() === $this) {
+                $report->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sanction[]
+     */
+    public function getSanctions(): Collection
+    {
+        return $this->sanctions;
+    }
+
+    public function addSanction(Sanction $sanction): self
+    {
+        if (!$this->sanctions->contains($sanction)) {
+            $this->sanctions[] = $sanction;
+            $sanction->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSanction(Sanction $sanction): self
+    {
+        if ($this->sanctions->removeElement($sanction)) {
+            // set the owning side to null (unless already changed)
+            if ($sanction->getUser() === $this) {
+                $sanction->setUser(null);
             }
         }
 

@@ -8,13 +8,14 @@
 
 namespace App\Admin;
 
+use App\Entity\Teams;
+use App\Entity\Tournament;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -26,6 +27,20 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
  */
 class TournamentAdmin extends AbstractAdmin
 {
+    /**
+     * @param object|null $object
+     * @return string|null
+     */
+    public function toString($object)
+    {
+        return $object instanceof Tournament
+            ? $object->getName()
+            : 'Tournament ; Name';
+    }
+
+    /**
+     * @param FormMapper $form
+     */
     protected function configureFormFields(FormMapper $form)
     {
         $form
@@ -47,11 +62,16 @@ class TournamentAdmin extends AbstractAdmin
                 ]
             ])
             ->add('teams', ModelType::class, [
+                'class' => Teams::class,
+                'property' => 'name',
                 'multiple' => true
             ])
         ;
     }
 
+    /**
+     * @param ListMapper $list
+     */
     protected function configureListFields(ListMapper $list)
     {
         $list
@@ -66,6 +86,9 @@ class TournamentAdmin extends AbstractAdmin
         ;
     }
 
+    /**
+     * @param DatagridMapper $filter
+     */
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
         $filter

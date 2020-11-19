@@ -33,7 +33,12 @@ class TournamentFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
+            ->add('name', TextType::class, [
+                'documentation' => [
+                    'type' => 'string',
+                    'description' => 'Name team'
+                ]
+            ])
             ->add('map', CollectionType::class)
             ->add('format', CollectionType::class)
             ->add('slots', NumberType::class)

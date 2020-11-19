@@ -47,32 +47,32 @@ class TeamController extends AbstractController
     {
         $team = $teamManager->createTeam();
         $data = json_decode($request->getContent(), true);
-        $userTop = $userManager->getUserById($data["top"]);
-        $userMid = $userManager->getUserById($data["mid"]);
-        $userJungle = $userManager->getUserById($data["jungle"]);
-        $userAdc = $userManager->getUserById($data["adc"]);
-        $userSupport = $userManager->getUserById($data["support"]);
+        $userTop = $userManager->getUserBySummonerName($data["top"]);
+        $userMid = $userManager->getUserBySummonerName($data["mid"]);
+        $userJungle = $userManager->getUserBySummonerName($data["jungle"]);
+        $userAdc = $userManager->getUserBySummonerName($data["adc"]);
+        $userSupport = $userManager->getUserBySummonerName($data["support"]);
         $violation = $validator->validate($team);
         $form = $this->createForm(TeamFormType::class, $team);
         $form->submit($data);
-
-        if (!$userTop) {
-            return new JsonResponse("The summoner not exist for the position top", Response::HTTP_BAD_REQUEST);
-        } elseif (!$userMid) {
-            return new JsonResponse("The summoner not exist for the position mid", Response::HTTP_BAD_REQUEST);
-        } elseif (!$userAdc) {
-            return new JsonResponse("The summoner not exist for the position adc", Response::HTTP_BAD_REQUEST);
-        } elseif (!$userJungle) {
-            return new JsonResponse("The summoner not exist for the position jungle", Response::HTTP_BAD_REQUEST);
-        } elseif (!$userSupport) {
-            return new JsonResponse("The summoner name exist for the position support", Response::HTTP_BAD_REQUEST);
-        }
 
         if (0 !== count($violation)) {
             foreach ($violation as $error) {
                 return new JsonResponse($error->getMessage(), Response::HTTP_BAD_REQUEST);
             }
         }
+        if (!$userTop) {
+            return new JsonResponse(sprintf("The summoner name %s not exist for the position top", $data['top']), Response::HTTP_BAD_REQUEST);
+        } elseif (!$userMid) {
+            return new JsonResponse(sprintf("The summoner name %s not exist for the position mid", $data['mid']), Response::HTTP_BAD_REQUEST);
+        } elseif (!$userAdc) {
+            return new JsonResponse(sprintf("The summoner name %s not exist for the position adc", $data['adc']), Response::HTTP_BAD_REQUEST);
+        } elseif (!$userJungle) {
+            return new JsonResponse(sprintf("The summoner name %s not exist for the position jungle", $data['jungle']), Response::HTTP_BAD_REQUEST);
+        } elseif (!$userSupport) {
+            return new JsonResponse(sprintf("The summoner name %s not exist for the position support", $data['support']), Response::HTTP_BAD_REQUEST);
+        }
+
         $teamManager->save($team);
 
         return new JsonResponse('Team created', Response::HTTP_OK);
@@ -134,31 +134,30 @@ class TeamController extends AbstractController
     {
         $team = $teamManager->getTeamByName($name);
         $data = json_decode($request->getContent(), true);
-        $userTop = $userManager->getUserById($data["top"]);
-        $userMid = $userManager->getUserById($data["mid"]);
-        $userJungle = $userManager->getUserById($data["jungle"]);
-        $userAdc = $userManager->getUserById($data["adc"]);
-        $userSupport = $userManager->getUserById($data["support"]);
+        $userTop = $userManager->getUserBySummonerName($data["top"]);
+        $userMid = $userManager->getUserBySummonerName($data["mid"]);
+        $userJungle = $userManager->getUserBySummonerName($data["jungle"]);
+        $userAdc = $userManager->getUserBySummonerName($data["adc"]);
+        $userSupport = $userManager->getUserBySummonerName($data["support"]);
         $violation = $validator->validate($team);
         $form = $this->createForm(TeamFormType::class, $team);
         $form->submit($data);
-
-        if (!$userTop) {
-            return new JsonResponse("The summoner not exist for the position top", Response::HTTP_BAD_REQUEST);
-        } elseif (!$userMid) {
-            return new JsonResponse("The summoner not exist for the position mid", Response::HTTP_BAD_REQUEST);
-        } elseif (!$userAdc) {
-            return new JsonResponse("The summoner not exist for the position adc", Response::HTTP_BAD_REQUEST);
-        } elseif (!$userJungle) {
-            return new JsonResponse("The summoner not exist for the position jungle", Response::HTTP_BAD_REQUEST);
-        } elseif (!$userSupport) {
-            return new JsonResponse("The summoner name exist for the position support", Response::HTTP_BAD_REQUEST);
-        }
 
         if (0 !== count($violation)) {
             foreach ($violation as $error) {
                 return new JsonResponse($error->getMessage(), Response::HTTP_BAD_REQUEST);
             }
+        }
+        if (!$userTop) {
+            return new JsonResponse(sprintf("The summoner name %s not exist for the position top", $data['top']), Response::HTTP_BAD_REQUEST);
+        } elseif (!$userMid) {
+            return new JsonResponse(sprintf("The summoner name %s not exist for the position mid", $data['mid']), Response::HTTP_BAD_REQUEST);
+        } elseif (!$userAdc) {
+            return new JsonResponse(sprintf("The summoner name %s not exist for the position adc", $data['adc']), Response::HTTP_BAD_REQUEST);
+        } elseif (!$userJungle) {
+            return new JsonResponse(sprintf("The summoner name %s not exist for the position jungle", $data['jungle']), Response::HTTP_BAD_REQUEST);
+        } elseif (!$userSupport) {
+            return new JsonResponse(sprintf("The summoner name %s not exist for the position support", $data['support']), Response::HTTP_BAD_REQUEST);
         }
         $teamManager->save($team);
 
