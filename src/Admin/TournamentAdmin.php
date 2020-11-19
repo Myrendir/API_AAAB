@@ -66,6 +66,7 @@ class TournamentAdmin extends AbstractAdmin
                 'property' => 'name',
                 'multiple' => true
             ])
+            ->add('isEnabled')
         ;
     }
 
@@ -83,6 +84,7 @@ class TournamentAdmin extends AbstractAdmin
                 'sortable' => true,
                 'sort_field_mapping' => ['fieldName' => 'name']
             ])
+            ->add('isEnabled')
         ;
     }
 

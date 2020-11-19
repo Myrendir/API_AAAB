@@ -87,6 +87,7 @@ class UsersAdmin extends AbstractAdmin
             ->add('confirmPassword', PasswordType::class, [
                 'required' => false
             ])
+            ->add('isEnabled')
         ;
     }
 
@@ -107,6 +108,7 @@ class UsersAdmin extends AbstractAdmin
                     'delete' => []
                 ]
             ])
+            ->add('isEnabled')
         ;
     }
 

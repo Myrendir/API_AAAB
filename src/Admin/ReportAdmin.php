@@ -62,6 +62,7 @@ class ReportAdmin extends AbstractAdmin
                     'Unnecessarily disruptive language or behavior that derails the match for other players' => 'Unnecessarily disruptive language or behavior that derails the match for other players',
                 ]
             ])
+            ->add('isEnabled')
         ;
     }
 
@@ -74,6 +75,7 @@ class ReportAdmin extends AbstractAdmin
             ->addIdentifier('motif')
             ->add('comment')
             ->add('date')
+            ->add('isEnabled')
         ;
     }
 
