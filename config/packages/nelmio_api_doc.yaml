@@ -1,0 +1,26 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: My App
+            description: This is an awesome app!
+            version: 1.0.0
+        components:
+            securitySchemes:
+                Bearer:
+                    type: http
+                    scheme: bearer
+                    bearerFormat: JWT
+    models:
+        use_jms: false
+        names:
+            - { alias: Users, type: App\Entity\Users }
+            - { alias: Match, type: App\Entity\Matchs }
+            - { alias: Tournament, type: App\Entity\Tournament }
+            - { alias: Type, type: App\Entity\Type }
+            - { alias: Teams, type: App\Entity\Teams }
+            - { alias: Sanction, type: App\Entity\Sanction }
+            - { alias: Report, type: App\Entity\Report }
+    areas: # to filter documented areas
+        path_patterns:
+            - ^/api
+            - ^/user
