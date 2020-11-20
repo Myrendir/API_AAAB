@@ -50,20 +50,12 @@ class Tournament
 
     /**
      * @ORM\Column(type="array")
-     * @Assert\Choice(
-     *     choices={"5vs5", "3vs3", "1vs1"},
-     *     message="Please choose one of the choices offered"
-     * )
      * @Property(type="array", @Items(type="string"))
      */
     private $format = [];
 
     /**
      * @ORM\Column(type="array")
-     * @Assert\Choice(
-     *     choices={"Howling Abyss", "Summoner's Rift"},
-     *     message="Please choose one of the choices offered"
-     * )
      * @Property(type="array", @Items(type="string"))
      */
     private $map = [];

@@ -28,14 +28,12 @@ class Teams
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="The field name not be empty")
      * @Assert\Length(max="50", maxMessage="The name not must be maximum 50 characters")
      */
     private $name;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Assert\NotBlank(message="The field score not be blank")
      */
     private $score;
 
