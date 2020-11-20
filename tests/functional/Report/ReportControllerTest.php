@@ -24,7 +24,7 @@ class ReportControllerTest extends \Codeception\Test\Unit
          */
         $this->tester->sendPostJson('/api/report/create', [
             'user' => 'Michel',
-            'motif' => 'Insult',
+            'motif' => 'Any kind of hate speech such as homophobia, sexism, racism, and ableism',
             'comment' => 'Il n\'a pas arrêté de me flame'
         ]);
         $this->tester->seeResponseContainsJson([0 => 'Report created.']);

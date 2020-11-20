@@ -57,7 +57,7 @@ class TournamentControllerTest extends \Codeception\Test\Unit
         $this->tester->sendPatchJson('/api/tournament/update/Tournament1', [
             'name' => 'Tournoi1',
             'format' => ['3vs3'],
-            'map' => ['Aram'],
+            'map' => ['Howling Abyss'],
             'slots' => 25,
             'teams' => 'Team1'
         ]);
@@ -67,7 +67,7 @@ class TournamentControllerTest extends \Codeception\Test\Unit
         $this->tester->seeResponseContainsJson([
             'name' => 'Tournoi1',
             'format' => ['3vs3'],
-            'map' => ['Aram'],
+            'map' => ['Howling Abyss'],
             'slots' => 25
         ]);
     }

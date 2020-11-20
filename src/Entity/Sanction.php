@@ -6,6 +6,7 @@ use App\Repository\SanctionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=SanctionRepository::class)
@@ -24,16 +25,19 @@ class Sanction
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime(format="Y-m-d H:i:s")
      */
     private $startSanction;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime(format="Y-m-d H:i:s")
      */
     private $endSanction;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min="20", minMessage="The motif must be minimum 20 characters")
      */
     private $motif;
 

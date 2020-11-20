@@ -27,6 +27,7 @@ class Report
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime(format="Y-m-d H:i:s")
      */
     private $date;
 
