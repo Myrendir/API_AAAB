@@ -27,6 +27,7 @@ class Report
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime(format="Y-m-d H:i:s")
      */
     private $date;
 
@@ -42,6 +43,16 @@ class Report
 
     /**
      * @ORM\Column(type="array")
+     * @Assert\Choice(
+     *     choices={
+     *     "Insulting, harassing, or offensive language directed at other players",
+     *     "Any kind of hate speech such as homophobia, sexism, racism, and ableism",
+     *     "Intentionally ruining the game for other players with in game actions such as griefing, feeding, or purposely playing in a way to make it harder for the rest of the team",
+     *     "Leaving or going AFK at any point during the match being played",
+     *     "Inappropriate Summoner Names",
+     *     "Unnecessarily disruptive language or behavior that derails the match for other players"}
+     *     message="Please choose one of the choices offered"
+     * )
      * @Property(type="array", @Items(type="string"))
      */
     private $motif = [];

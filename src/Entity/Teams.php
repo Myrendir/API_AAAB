@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use OpenApi\Annotations\Property;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TeamsRepository::class)
@@ -27,11 +28,14 @@ class Teams
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="The field name not be empty")
+     * @Assert\Length(max="50", maxMessage="The name not must be maximum 50 characters")
      */
     private $name;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\NotBlank(message="The field score not be blank")
      */
     private $score;
 
